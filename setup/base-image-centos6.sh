@@ -22,7 +22,7 @@ cat > /etc/yum.repos.d/init.repo <<'EOF'
 name=epel
 baseurl=http://repos/repos/yum/mirrors/epel/6/latest/$basearch/
 enabled=1
-gpgcheck=0
+gpgcheck=1
 
 [puppetlabs]
 name=puppetlabs
@@ -34,15 +34,19 @@ gpgcheck=0
 name=os
 baseurl=http://repos/repos/yum/mirrors/centos/6/latest/os/$basearch
 enabled=1
-gpgcheck=0
+gpgcheck=1
 
 [updates]
 name=updates
 baseurl=http://repos/repos/yum/mirrors/centos/6/latest/updates/$basearch
 enabled=1
-gpgcheck=0
+gpgcheck=1
 EOF
 yum clean all || fail
+
+# import keys for those repos (except puppetlabs)
+rpm --import http://repos/repos/yum/mirrors/epel/6/0608B895.txt
+rpm --import http://repos/repos/yum/mirrors/centos/6/RPM-GPG-KEY-CentOS-6
 
 # install upgrades from the os base that anaconda put in place
 yum upgrade -y || fail

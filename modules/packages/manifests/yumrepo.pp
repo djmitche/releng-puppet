@@ -1,4 +1,4 @@
-define packages::yumrepo ($repo_name = $title, $baseurl) {
+define packages::yumrepo ($repo_name = $title, $baseurl, $gpg_key='', $gpg_key_pkg='') {
 
     # For now (puppet 2.7.1 as of this writing)
     # we have to use the file resource here, the
@@ -10,5 +10,13 @@ define packages::yumrepo ($repo_name = $title, $baseurl) {
     file {
         "/etc/yum.repos.d/$repo_name.repo":
             content => template("packages/yumrepo.erb");
+    }
+
+    if ($gpg_key) {
+        exec {
+            "install-$repo_name-gpg-key":
+                command => "/bin/rpm --import $gpg_key",
+                unless => "/bin/rpm -q $gpg_key_pkg"
+        }
     }
 }
