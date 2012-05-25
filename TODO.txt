@@ -1,0 +1,12 @@
+* move packages::tooltool to packages::mozilla::tooltool
+* move packages::python* too
+* kill packages::mozilla-tool
+* mock, createrepo not needed? asked jhford in #build
+  * but cltbld put in the 'mock' group?
+* close 733550, 733552
+
+todoc:
+* toplevel::slave::build::mock
+* packages::mock - DONE
+* packages::mozilla::mock_mozilla - see https://github.com/jhford/mock_mozilla, just add readme
+* mockbuild
