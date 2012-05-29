@@ -6,8 +6,8 @@ define packages::yumrepo ($repo_name = $title, $url_path, $gpg_key='', $gpg_key_
 
     # for the template
     $ipaddress = $::ipaddress
-    $repo_servers = $config::repo_servers
-    $yum_server = $config::yum_server
+    $data_server = $config::data_server
+    $data_servers = $config::data_servers
 
     # For now (puppet 2.7.1 as of this writing)
     # we have to use the file resource here, the
