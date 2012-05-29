@@ -28,6 +28,9 @@ define packages::yumrepo ($repo_name = $title, $url_path, $gpg_key='', $gpg_key_
         file {
             "/etc/pki/${repo_name}-pubkey.txt":
                 source => $gpg_key,
+                owner => root,
+                group => root,
+                mode => 0644,
                 notify => Exec["install-${repo_name}-repo-pubkey"];
         }
         exec {
