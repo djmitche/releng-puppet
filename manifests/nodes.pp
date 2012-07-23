@@ -21,3 +21,8 @@ node "relabs-slave.build.mtv1.mozilla.com" {
 node "linux-foopy-test.build.mtv1.mozilla.com" {
     include toplevel::server::foopy
 }
+
+node /r5-puppetagain.*/ {
+    include puppet::atboot
+    include buildslave
+}

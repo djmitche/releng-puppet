@@ -3,13 +3,7 @@
 class buildslave::startup {
     include ::shared
     include buildslave::install
-
-    $startuptype = $operatingsystem ? {
-        CentOS      => "initd",
-        # not done in PuppetAgain yet:
-        #Fedora      => "desktop",
-        #Darwin      => "launchd"
-    }
+    include dirs::usr::local::bin
 
     # everyone uses runslave.py in the same place
     file {
@@ -20,26 +14,12 @@ class buildslave::startup {
             mode => 755;
     }
 
-    case $startuptype {
-        initd: {
-            file {
-                "/etc/init.d/buildbot":
-                    content => template("buildslave/linux-initd-buildbot.sh.erb"),
-                    owner  => "root",
-                    group  => "root",
-                    mode => 755;
-            }
-
-            service {
-                "buildbot":
-                    enable => true,
-                    require => [
-                        File['/etc/init.d/buildbot'],
-                        File['/usr/local/bin/runslave.py'],
-                        Class['buildslave::install'],
-                    ];
-            }
-        }
+    # select an implementation class based on operating system
+    $startuptype = $operatingsystem ? {
+        CentOS      => "initd",
+        Darwin      => "launchd"
+        # not done in PuppetAgain yet:
+        #Fedora      => "desktop",
     }
+    class { "buildslave::startup::$startuptype": }
 }
-
