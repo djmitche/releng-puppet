@@ -6,7 +6,7 @@ node "relabs07.build.mtv1.mozilla.com" {
 }
 
 node "relabs08.build.mtv1.mozilla.com" {
-    include toplevel::slave::build::mock
+    include toplevel::server::bmm::admin
 }
 
 node "relabs-buildbot-master.build.mtv1.mozilla.com" {
@@ -54,6 +54,5 @@ node /puppetmaster-\d+\..*\.aws-.*\.mozilla\.com/ {
 }
 
 node "mobile-services.build.scl1.mozilla.com" {
-     $is_bmm_admin_host = 1
-     include toplevel::server::bmm
+     include toplevel::server::bmm::admin
 }

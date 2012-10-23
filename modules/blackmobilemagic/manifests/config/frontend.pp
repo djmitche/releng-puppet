@@ -1,4 +1,4 @@
-class blackmobilemagic::config::frontend {
+class blackmobilemagic::config::frontend($admin=false) {
     include dirs::opt::bmm
     include packages::mozilla::python27
     include blackmobilemagic::settings
@@ -30,8 +30,7 @@ class blackmobilemagic::config::frontend {
     }
 
     # only the admin node should do the inventory sync
-    if ($is_bmm_admin_host) {
-        notice("hi")
+    if ($admin) {
         file {
             "/etc/cron.d/bmm-inventorysync":
                 content => "15,45 * * * * apache BMM_CONFIG=${::blackmobilemagic::settings::config_ini} /opt/bmm/frontend/bin/bmm-inventorysync\n";

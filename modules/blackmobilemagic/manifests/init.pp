@@ -1,7 +1,15 @@
-class blackmobilemagic {
+class blackmobilemagic($admin=purple) {
     include dirs::opt::bmm
-    include blackmobilemagic::config::httpd
-    include blackmobilemagic::config::tftpd
-    include blackmobilemagic::config::rsyslog
-    include blackmobilemagic::config::frontend
+
+    notify {
+        "admin is $admin": ;
+    }
+
+    class {
+        blackmobilemagic::config::httpd: ;
+        blackmobilemagic::config::tftpd: ;
+        blackmobilemagic::config::rsyslog: ;
+        blackmobilemagic::config::frontend:
+            admin => $admin;
+    }
 }
