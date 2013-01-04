@@ -4,8 +4,8 @@ class packages::puppet {
         'packages::puppet::end': ;
     }
 
-    $puppet_version = "2.7.17"
-    $puppet_rpm_version = "${puppet_version}-1.el6"
+    $puppet_version = "3.0.2"
+    $puppet_rpm_version = "${puppet_version}-moz0"
     $facter_version = "1.6.11"
 
     case $::operatingsystem {

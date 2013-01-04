@@ -1,0 +1,27 @@
+(NOTE: test changes are stripped here, as they do not apply cleanly and aren't required)
+
+From 6ec3abe292b84883f99e537d284331d99886fda5 Mon Sep 17 00:00:00 2001
+From: "Dustin J. Mitchell" <dustin@mozilla.com>
+Date: Fri, 31 Aug 2012 18:09:57 -0400
+Subject: [PATCH] (#15561) allow printable ascii in CN's - slightly more
+ permissive
+
+In particular, this allows /, which appears in a lot of chained CNs.
+---
+ lib/puppet/ssl/base.rb                      |    2 +-
+ spec/unit/ssl/certificate_authority_spec.rb |    7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/lib/puppet/ssl/base.rb b/lib/puppet/ssl/base.rb
+index f446490..e4e5b78 100644
+--- a/lib/puppet/ssl/base.rb
++++ b/lib/puppet/ssl/base.rb
+@@ -7,7 +7,7 @@ class Puppet::SSL::Base
+   SEPARATOR = "\n---\n"
+ 
+   # Only allow printing ascii characters, excluding /
+-  VALID_CERTNAME = /\A[ -.0-~]+\Z/
++  VALID_CERTNAME = /\A[[:print:]]+\Z/
+ 
+   def self.from_multiple_s(text)
+     text.split(SEPARATOR).collect { |inst| from_s(inst) }
