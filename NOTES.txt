@@ -1,0 +1,12 @@
+dotfiles under e.g., modules/users/files/dmitchell
+
+config has a list of usernames that should have access
+  use virtual resources?
+  need to be able to override per host
+  need to be able to enforce absence
+  no local management of passwords
+
+interactions with sudo
+  via group membership? or is that even worse?
+
+handle ssh stuff (known hosts, too) with custom functions?
