@@ -1,0 +1,21 @@
+#! /bin/bash
+
+passfile=${1:-passwords}.txt
+if ! [ -e ~/secrets/${passfile}.gpg ]; then
+    echo "${passfile} doesn't exist"
+    exit 1
+fi
+
+cd ~/secrets
+
+echo "* pulling from repo"
+git pull origin secrets
+
+gpg --use-agent ${passfile}.gpg || exit 1
+vim ${passfile} || exit 1
+rm -f ${passfile}.gpg
+gpg --use-agent -r dustin@cs.uchicago.edu -e ${passfile} || exit 1
+rm -f ${passfile}
+git add ${passfile}.gpg || exit 1
+git commit -m "${passfile} updated" || exit 1
+git push || exit 1

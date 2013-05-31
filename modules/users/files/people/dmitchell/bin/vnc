@@ -1,0 +1,13 @@
+#! /bin/bash
+
+HOSTNAME="$1"
+if test -z "$HOSTNAME"; then
+    echo 'no hostname'
+    exit 1
+fi
+
+HOSTNAME="$HOSTNAME.build.mozilla.org"
+
+echo "connecting to $HOSTNAME"
+
+exec open -g vnc://$HOSTNAME

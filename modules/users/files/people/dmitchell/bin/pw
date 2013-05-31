@@ -1,0 +1,17 @@
+#! /bin/bash
+
+pattern="$1"
+
+passfile=${2:-passwords}.txt
+if ! [ -e ~/secrets/${passfile}.gpg ]; then
+    echo "${passfile} doesn't exist"
+    exit 1
+fi
+
+cd ~/secrets
+
+echo "* pulling from repo"
+git pull origin secrets
+
+# then, hopefully having cached the passphrase, with less
+exec gpg --use-agent -d ${passfile}.gpg | grep --color -- "$1"

@@ -1,0 +1,4 @@
+#! /bin/sh
+
+rsync --delete --recursive --perms  --times --whole-file --exclude='.*' ~/Downloads/ euclid.r.igoro.us:Downloads/ || exit 1
+rsync --delete --recursive --perms  --times --whole-file --exclude='.*' euclid.r.igoro.us:Uploads/ ~/Uploads/  || exit 1

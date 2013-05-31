@@ -1,0 +1,5 @@
+#! /bin/bash
+
+rsync -aE --delete ~/Music/ /Volumes/media/dustin/Music/
+# fails
+#rsync -aE --delete ~/Pictures/ /Volumes/media/dustin/Pictures/

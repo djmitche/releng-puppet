@@ -1,0 +1,68 @@
+#! /bin/bash
+set -e
+
+for_all_sync_scripts() {
+    for scpt in *-sync.sh; do
+        echo "- "`echo $scpt | sed 's/\(.*\)-sync.sh/\1/'`
+        if ! bash $scpt ${@}; then
+            echo "ERROR: while running $scpt"
+            return 1
+        fi
+    done
+}
+
+usage() {
+    echo "USAGE:"
+    echo "  -g: get only"
+    echo "  -p: put only"
+    echo "  -H homedir: set homedir"
+    echo "  -D dotfiles: set dotfiles repo path"
+    exit 1
+}
+
+get_only=false
+put_only=false
+[ -z "$HOME" ] && HOME=~
+export HOME
+dotfiles=$HOME/dotfiles
+while getopts "hgpH:D:" OPT; do
+    case $OPT in
+        h) usage ;;
+        g) get_only=true ;;
+        p) put_only=true ;;
+        H) HOME=$OPTARG ;;
+        D) dotfiles=$OPTARG ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            exit 1;;
+    esac
+done
+shift $((OPTIND - 1))
+
+cd $dotfiles
+
+# get a copy of all of the relevant dotfiles
+if ! $put_only; then
+    echo "== Getting files from HOME"
+    for_all_sync_scripts get
+fi
+
+if ! $get_only && ! $put_only; then
+
+    # check for dirty state (in case any of them have changed)
+    if test -n "$(git status --porcelain)"; then
+        git status || true
+        echo "==== Untracked changes; please commit and push ===="
+        exit 1
+    fi
+
+    # sync from origin
+    echo "== Pulling from origin"
+    git pull origin master
+fi
+
+# put the updated dotfiles back
+if ! $get_only; then
+    echo "== Putting updated files in HOME"
+    for_all_sync_scripts put
+fi

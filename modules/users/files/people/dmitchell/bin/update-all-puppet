@@ -1,0 +1,13 @@
+#! /bin/bash
+
+dc=$1
+if [ -z "$dc" ]; then
+    echo "USAGE: $0 datacenter"
+    exit 1
+fi
+
+ssh -t puppet1.private.$dc.mozilla.com sudo /etc/puppet/bin/update-puppet
+echo 'svn sync done'
+for h in puppetmaster{1..4}.private.$dc.mozilla.com; do
+    ssh -t $h sudo /usr/local/bin/puppet-backend-update
+done

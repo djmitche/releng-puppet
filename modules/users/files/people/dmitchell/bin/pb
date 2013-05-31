@@ -1,0 +1,16 @@
+#! /bin/bash
+if ! [ -x /usr/bin/pbpaste ]; then
+    echo "mac required"
+    exit 1
+fi
+
+if pbpaste | grep --color -E 'passw(or)?d'; then
+    echo -n "Hey now, does that have a password in it? ^C now if so: "
+    read DUMMY
+fi
+
+( pbpaste; echo ) | tail -n3
+URL=`pbpaste | pbmoz`
+echo -n $URL | pbcopy
+echo " ---> clipboard: $URL"
+say "paste"

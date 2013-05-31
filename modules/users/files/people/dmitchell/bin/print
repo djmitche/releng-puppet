@@ -1,0 +1,8 @@
+#! /bin/sh
+
+TMPFILE=/tmp/print-$$.ps
+enscript -E -f Courier6  -r -2 -o $TMPFILE $1
+echo "ENTER to send to default printer"
+read FOO
+lp -o sides=two-sided-long-edge $TMPFILE
+rm $TMPFILE
