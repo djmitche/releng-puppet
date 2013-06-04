@@ -7,6 +7,36 @@ class users::global {
         'users::global::end': ;
     }
 
+    # set the bash prompt
+    file {
+        "/etc/profile.d":
+            ensure => directory;
+        "/etc/profile.d/ps1.sh":
+            content => template("${module_name}/ps1.sh.erb");
+    }
+    case ($::operatingsystem) {
+        CentOS: {
+            # profile.d actually works out of the box
+        }
+        Ubuntu: {
+            file {
+                # patch /root/bashrc to not alter PS1
+                "/root/bashrc":
+                    source => "file:///modules/users/ubuntu-root-bashrc";
+            }
+        }
+        Darwin: {
+            file {
+                # patch /etc/profile to run /etc/profile.d/*.sh
+                "/etc/profile":
+                    source => "file:///modules/users/darwin-profile";
+            }
+        }
+        default: {
+            fail("don't know how to set PS1 on this operating system")
+        }
+    }
+
     # put some basic information in /etc/motd
     Anchor['users::global::begin'] ->
     motd {
