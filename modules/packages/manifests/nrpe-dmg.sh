@@ -18,7 +18,7 @@ set -e
 curl -LO http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.14/nrpe-2.14.tar.gz
 tar -xvf nrpe-2.14.tar.gz
 pushd nrpe-2.14
-./configure --prefix=/usr/local
+./configure --prefix=/usr/local --enable-command-args
 make
 make DESTDIR=$BUILD/installroot install
 popd
@@ -51,8 +51,8 @@ chmod +x $BUILD/scripts/postinstall
 PACKAGE_MAKER="/Developer/usr/bin/packagemaker"
 
 DIR_TO_PACKAGE=installroot/usr/local/
-PACKAGE_BASENAME=nrpe-2.14
-PACKAGE_SHORTNAME=nrpe214
+PACKAGE_BASENAME=nrpe-2.14-moz1
+PACKAGE_SHORTNAME=nrpe214moz1
 INSTALLDIR=/usr/
 
 if [[ -z $DIR_TO_PACKAGE || -z $PACKAGE_BASENAME || -z $PACKAGE_SHORTNAME || -z $INSTALLDIR ]]; then
