@@ -6,7 +6,7 @@ class mockbuild::services {
     include packages::mozilla::supervisor
     include packages::xvfb
 
-    supervisord::supervise {
+    supervisord::service {
       "Xvfb":
          command => "Xvfb :2 -screen 0 1280x1024x24",
          user => $::config::builder_username;
