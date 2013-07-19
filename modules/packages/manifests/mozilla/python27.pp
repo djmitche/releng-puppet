@@ -57,7 +57,11 @@ class packages::mozilla::python27 {
             Anchor['packages::mozilla::python27::begin'] ->
             packages::pkgdmg {
                 python27:
-                    version => "2.7.2-1";
+                    version => $macosx_productversion_major ? {
+                        10.6 => "2.7.3-1",
+                        10.7 => "2.7.2-1", # pending bug 602908
+                        10.8 => "2.7.2-1"  # pending bug 602908
+                    };
             } -> Anchor['packages::mozilla::python27::end']
         }
         default: {

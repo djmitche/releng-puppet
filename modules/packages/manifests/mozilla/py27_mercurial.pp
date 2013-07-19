@@ -34,11 +34,17 @@ class packages::mozilla::py27_mercurial {
             } -> Anchor['packages::mozilla::py27_mercurial::end']
         }
         Darwin: {
-            $mercurial = "/tools/mercurial/bin/hg"
+            $mercurial = $macosx_productversion_major ? {
+                10.6 => "/tools/python27_mercurial/bin/hg",
+                default => "/tools/mercurial/bin/hg",
+            }
             Anchor['packages::mozilla::py27_mercurial::begin'] ->
             packages::pkgdmg {
                 python27-mercurial:
-                    version => "2.5.4-1";
+                    version => $macosx_productversion_major ? {
+                        10.6 => "2.5.4-2",
+                        default => "2.5.4-1", # pending bug 895995
+                    };
             } -> Anchor['packages::mozilla::py27_mercurial::end']
         }
         default: {
