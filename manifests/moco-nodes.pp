@@ -16,6 +16,11 @@ node "talos-r4-snow-079.build.scl1.mozilla.com" {
     include toplevel::slave::test::gpu
 }
 
+### temporary for bug 895639
+node "t-mavericks-r5-001.test.releng.scl3.mozilla.com" {
+    include toplevel::slave::test::gpu
+}
+
 
 ## foopies
 
