@@ -18,6 +18,13 @@ class users::root::account($username, $group, $home) {
                     password => secret("root_pw_hash");
             }
         }
+	#Windows Puppet only verifies that root user is present
+	    Windows: {
+	        user { root:
+		    ensure => present,
+		    forcelocal => true,
+		    }
+	    }
         Darwin: {
             # use our custom type and provider, based on http://projects.puppetlabs.com/issues/12833
             case $::macosx_productversion_major {
