@@ -54,7 +54,7 @@ rm -f /var/lib/puppet/ssl/certs/ca.pem || exit 1
 # curl and wget are not installed everywhere by default.
 while true; do
     python <<EOF
-import urllib2, getpass
+import urllib2, getpass, json, sys
 deploypass="""$deploypass"""
 puppet_server="${PUPPET_SERVER:-puppet}"
 print "Contacting puppet server %s" % (puppet_server,)
@@ -65,7 +65,26 @@ password_mgr.add_password(None, 'https://'+puppet_server, 'deploy', deploypass)
 handler = urllib2.HTTPBasicAuthHandler(password_mgr)
 opener = urllib2.build_opener(handler)
 data = opener.open('https://%s/deploy/getcert.cgi' % (puppet_server,)).read()
-open("$ROOT/certs.sh", "w").write(data)
+
+if not data:
+    print "no data from server; check Apache error_log on server"
+    sys.exit(1)
+
+try:
+    data = json.loads(data)
+except Exception:
+    print "data from server:"
+    print repr(data)
+    raise
+
+print "server got IP from TCP connection:", data['ip']
+print "and hostname from reverse DNS:", data['hostname']
+if data['hostname'] != "$FQDN":
+    print "Hostnames do not match - check DNS"
+    sys.exit(1)
+open("/var/lib/puppet/ssl/private_keys/$FQDN.pem", "w").write(data['private-key'])
+open("/var/lib/puppet/ssl/certs/$FQDN.pem", "w").write(data['certificate'])
+open("/var/lib/puppet/ssl/certs/ca.pem", "w").write(data['ca-certificate'])
 EOF
     if [ $? -ne 0 ]; then
         $interactive && exit 1

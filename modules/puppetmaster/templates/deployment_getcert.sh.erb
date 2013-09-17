@@ -32,16 +32,18 @@ add_file_to_git "${certfile}" "agent-certs/${fqdn}/${host}.crt" "add agent cert 
 # Log it in CEF format for opsec
 logger "CEF:0|PuppetAgain|PuppetAgain|0|1|puppet client key signed|5|src=$ip shost=$host"
 
-# send the data back to the client
-echo "cat <<EOF >private_keys/${host}.pem"
-cat "${keyfile}"
-echo "EOF"
-echo "cat <<EOF >certs/${host}.pem"
-cat "${agent_certs_dir}/${fqdn}/${host}.crt"
-echo "EOF"
-echo "cat <<EOF >certs/ca.pem"
-cat "${root_ca_cert}"
-echo "EOF"
+# convert newlines to "\n"
+add_newlines() {
+    sed -e :a -e 'N; s/\n/\\n/; ta'
+}
+
+# send the data back to the client, formatted as JSON.  Fortunately the variable
+# data here is in a restricted format, so converting to JSON is not hard.
+key=$(add_newlines < "${keyfile}")
+cert=$(add_newlines < "${agent_certs_dir}/${fqdn}/${host}.crt")
+cacert=$(add_newlines < "${root_ca_cert}")
+
+echo '{"ip": "'$2'", "hostname": "'$host'", "private-key": "'$key'",  "certificate": "'$cert'",  "ca-certificate": "'$cacert'"}'
 
 # clean up
 rm -f "${certfile}"
