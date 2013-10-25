@@ -45,6 +45,9 @@ class config inherits config::base {
     $distinguished_puppetmaster = "releng-puppet2.srv.releng.scl3.mozilla.com"
     $puppetmaster_public_mirror_hosts = [ "releng-puppet2.srv.releng.scl3.mozilla.com" ]
     $puppet_again_repo = "http://hg.mozilla.org/build/puppet/"
+    $puppetmaster_extsyncs = {
+        fake => { 'param1' => 1, 'param2' => 3 },
+    }
 
     $user_python_repositories = [ "http://pypi.pvt.build.mozilla.org/pub", "http://pypi.pub.build.mozilla.org/pub" ]
 
