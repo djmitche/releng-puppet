@@ -31,7 +31,8 @@ class config::base {
     $puppet_again_repo = "http://hg.mozilla.org/build/puppet"
     $puppet_again_branch = "production"
     $puppet_server_reports = "tagmail"
-    $puppet_server_reporturl = "http://localhost:3000/reports/upload"
+    $puppet_server_reporturl = ""
+    $puppet_server_facturl = ""
     $user_python_repositories = [ "http://pypi.pub.build.mozilla.org/pub" ]
     $master_json = "https://hg.mozilla.org/build/tools/raw-file/default/buildfarm/maintenance/production-masters.json"
     $buildbot_tools_hg_repo = "https://hg.mozilla.org/build/tools"
