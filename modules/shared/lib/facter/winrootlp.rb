@@ -4,26 +4,25 @@
 
 #This creates the rlocalpath variable for Windows root home directory. This is needed becuase
 #on Windows root is a renamed built in account and may not always recieve the typical home directory.
-include Facter::Util::WMI
 
-rootsidquery = "select sid from Win32_UserAccount where name = 'root'"
-sidsq = Facter::Util::WMI.execquery(rootsidquery)
-
-        for sidobj in sidsq do
-            sidresult = "#{sidobj.sid}"
-        end
-        $rsid = sidresult
+# calculate the root sid once, since it's needed for rlocalpath, too
+def get_rsid
+    rootsidquery = "select sid from Win32_UserAccount where name = 'root'"
+    sidsq = Facter::Util::WMI.execquery(rootsidquery)
+    sidsq[0].sid
+end
 
 Facter.add("rsid") do
+    confine :operatingsystem => :windows
     setcode do
-        sidsq = Facter::Util::WMI.execquery(rootsidquery)
-        $rsid
+        get_rsid
     end
 end
 
-rootlpquery = "select localpath from Win32_UserProfile where sid = '#{$rsid}'"
 Facter.add("rlocalpath") do
+    confine :operatingsystem => :windows
     setcode do
+        rootlpquery = "select localpath from Win32_UserProfile where sid = '#{get_rsid}'"
         lpq = Facter::Util::WMI.execquery(rootlpquery)
         for lpobj in lpq do
             result = "#{lpobj.LocalPath}"

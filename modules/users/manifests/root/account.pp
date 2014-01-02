@@ -18,11 +18,12 @@ class users::root::account($username, $group, $home) {
                     password => secret("root_pw_hash");
             }
         }
-	#Windows Puppet only verifies that root user is present
 	    Windows: {
-	        user { root:
-		    ensure => present,
-		    forcelocal => true,
+            # Windows Puppet only verifies that root user is present
+	        user {
+                root:
+                    ensure => present,
+                    forcelocal => true,
 		    }
 	    }
         Darwin: {

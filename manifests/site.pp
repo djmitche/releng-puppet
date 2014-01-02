@@ -29,7 +29,12 @@ case $::operatingsystem {
 # purge unknown users from the system's user database.  This doesn't work on Windows
 # due to https://projects.puppetlabs.com/issues/22048
 # TODO-WIN: figre out how to not purge system users on windows (solve the puppetlabs bug)
-# to-do pending Puppet's reply to the above mentioned issue
+if ($::operatingsystem != "windows") {
+    resources {
+        'user':
+            purge => true;
+    }
+}
 
 # The PuppetLabs firewall module is only supported on Linux
 case $operatingsystem {
