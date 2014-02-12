@@ -222,7 +222,7 @@ node /mobile-imaging-\d+\.p\d+\.releng\.scl1\.mozilla\.com/ {
 ## buildbot masters
 
 node "dev-master1.srv.releng.scl3.mozilla.com" {
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master51.srv.releng.use1.mozilla.com" {
@@ -232,7 +232,7 @@ node "buildbot-master51.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-linux";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master52.srv.releng.use1.mozilla.com" {
@@ -242,7 +242,7 @@ node "buildbot-master52.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-linux";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master53.srv.releng.usw2.mozilla.com" {
@@ -252,7 +252,7 @@ node "buildbot-master53.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-linux";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master54.srv.releng.usw2.mozilla.com" {
@@ -262,7 +262,7 @@ node "buildbot-master54.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-linux";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master55.srv.releng.use1.mozilla.com" {
@@ -272,7 +272,7 @@ node "buildbot-master55.srv.releng.use1.mozilla.com" {
             master_type => "try",
             basedir => "try1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master56.srv.releng.usw2.mozilla.com" {
@@ -282,7 +282,7 @@ node "buildbot-master56.srv.releng.usw2.mozilla.com" {
             master_type => "try",
             basedir => "try1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master57.srv.releng.use1.mozilla.com" {
@@ -292,7 +292,7 @@ node "buildbot-master57.srv.releng.use1.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master58.srv.releng.usw2.mozilla.com" {
@@ -302,7 +302,7 @@ node "buildbot-master58.srv.releng.usw2.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 node "buildbot-master59.srv.releng.use1.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
@@ -311,7 +311,7 @@ node "buildbot-master59.srv.releng.use1.mozilla.com" {
             master_type => "try",
             basedir => "try1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master60.srv.releng.usw2.mozilla.com" {
@@ -321,7 +321,7 @@ node "buildbot-master60.srv.releng.usw2.mozilla.com" {
             master_type => "try",
             basedir => "try1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master61.srv.releng.use1.mozilla.com" {
@@ -331,7 +331,7 @@ node "buildbot-master61.srv.releng.use1.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
     include selfserve_agent
 }
 
@@ -342,7 +342,7 @@ node "buildbot-master62.srv.releng.use1.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
     include selfserve_agent
 }
 
@@ -353,7 +353,7 @@ node "buildbot-master63.srv.releng.use1.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master64.srv.releng.usw2.mozilla.com" {
@@ -363,7 +363,7 @@ node "buildbot-master64.srv.releng.usw2.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master65.srv.releng.usw2.mozilla.com" {
@@ -373,7 +373,7 @@ node "buildbot-master65.srv.releng.usw2.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
     include selfserve_agent
     # Disabled until bug 971737 is fixed.
     #include slaverebooter
@@ -386,7 +386,7 @@ node "buildbot-master66.srv.releng.usw2.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
     include toplevel::server::gaia_bumper
     include toplevel::server::b2g_bumper
     include selfserve_agent
@@ -399,7 +399,7 @@ node "buildbot-master67.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-linux";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master68.srv.releng.usw2.mozilla.com" {
@@ -409,7 +409,7 @@ node "buildbot-master68.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-linux";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master69.srv.releng.use1.mozilla.com" {
@@ -419,7 +419,7 @@ node "buildbot-master69.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-windows";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master70.srv.releng.use1.mozilla.com" {
@@ -429,7 +429,7 @@ node "buildbot-master70.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-windows";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master71.srv.releng.use1.mozilla.com" {
@@ -439,7 +439,7 @@ node "buildbot-master71.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-windows";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master72.srv.releng.usw2.mozilla.com" {
@@ -449,7 +449,7 @@ node "buildbot-master72.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-windows";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master73.srv.releng.usw2.mozilla.com" {
@@ -459,7 +459,7 @@ node "buildbot-master73.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-windows";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master74.srv.releng.usw2.mozilla.com" {
@@ -469,7 +469,7 @@ node "buildbot-master74.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-windows";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master75.srv.releng.use1.mozilla.com" {
@@ -479,7 +479,7 @@ node "buildbot-master75.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-macosx";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master76.srv.releng.use1.mozilla.com" {
@@ -489,7 +489,7 @@ node "buildbot-master76.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-macosx";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master77.srv.releng.use1.mozilla.com" {
@@ -499,7 +499,7 @@ node "buildbot-master77.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-macosx";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master78.srv.releng.usw2.mozilla.com" {
@@ -509,7 +509,7 @@ node "buildbot-master78.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-macosx";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master79.srv.releng.usw2.mozilla.com" {
@@ -519,7 +519,7 @@ node "buildbot-master79.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-macosx";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master80.srv.releng.usw2.mozilla.com" {
@@ -529,12 +529,12 @@ node "buildbot-master80.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-macosx";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master81.srv.releng.scl3.mozilla.com" {
     include toplevel::server
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
     include releaserunner
     include selfserve_agent
     include buildmaster::db_maintenance
@@ -556,7 +556,7 @@ node "buildbot-master82.srv.releng.scl3.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master83.srv.releng.scl3.mozilla.com" {
@@ -566,7 +566,7 @@ node "buildbot-master83.srv.releng.scl3.mozilla.com" {
             master_type => "try",
             basedir => "try1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master84.srv.releng.scl3.mozilla.com" {
@@ -576,7 +576,7 @@ node "buildbot-master84.srv.releng.scl3.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master85.srv.releng.scl3.mozilla.com" {
@@ -586,7 +586,7 @@ node "buildbot-master85.srv.releng.scl3.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master86.srv.releng.scl3.mozilla.com" {
@@ -596,7 +596,7 @@ node "buildbot-master86.srv.releng.scl3.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 
@@ -607,7 +607,7 @@ node "buildbot-master87.srv.releng.scl3.mozilla.com" {
             master_type => "try",
             basedir => "try1";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master88.srv.releng.scl3.mozilla.com" {
@@ -617,7 +617,7 @@ node "buildbot-master88.srv.releng.scl3.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-tegra";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master89.srv.releng.scl3.mozilla.com" {
@@ -627,7 +627,7 @@ node "buildbot-master89.srv.releng.scl3.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master90.srv.releng.use1.mozilla.com" {
@@ -637,7 +637,7 @@ node "buildbot-master90.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master91.srv.releng.usw2.mozilla.com" {
@@ -647,7 +647,7 @@ node "buildbot-master91.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master92.srv.releng.use1.mozilla.com" {
@@ -657,7 +657,7 @@ node "buildbot-master92.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master93.srv.releng.usw2.mozilla.com" {
@@ -667,7 +667,7 @@ node "buildbot-master93.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master94.srv.releng.use1.mozilla.com" {
@@ -677,7 +677,7 @@ node "buildbot-master94.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master95.srv.releng.usw2.mozilla.com" {
@@ -687,7 +687,7 @@ node "buildbot-master95.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-tegra";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master96.srv.releng.use1.mozilla.com" {
@@ -697,7 +697,7 @@ node "buildbot-master96.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-tegra";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master97.srv.releng.usw2.mozilla.com" {
@@ -707,7 +707,7 @@ node "buildbot-master97.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-tegra";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master98.srv.releng.use1.mozilla.com" {
@@ -717,7 +717,7 @@ node "buildbot-master98.srv.releng.use1.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-tegra";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master99.srv.releng.scl3.mozilla.com" {
@@ -727,7 +727,7 @@ node "buildbot-master99.srv.releng.scl3.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-tegra";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master100.srv.releng.scl3.mozilla.com" {
@@ -737,7 +737,7 @@ node "buildbot-master100.srv.releng.scl3.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master101.srv.releng.scl3.mozilla.com" {
@@ -747,7 +747,7 @@ node "buildbot-master101.srv.releng.scl3.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master102.srv.releng.scl3.mozilla.com" {
@@ -757,7 +757,7 @@ node "buildbot-master102.srv.releng.scl3.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-panda";
     }
-    include toplevel::server::buildmaster
+    include toplevel::server::buildmaster::mozilla
 }
 
 # Package Builders
