@@ -87,10 +87,13 @@ class config inherits config::base {
         '10.26.48.55',
         '10.26.48.56',
         '10.26.48.57',
+        '10.132.49.94',
         '10.132.49.112',
         '10.132.49.125',
+        '10.132.49.181',
         '10.132.50.44',
         '10.132.50.56',
+        '10.132.50.54',
         '10.132.50.142',
         '10.132.50.247',
         '10.134.48.196',
@@ -98,6 +101,8 @@ class config inherits config::base {
         '10.134.48.236',
         '10.134.49.62',
         '10.134.49.93',
+        '10.134.49.94',
+        '10.134.49.111',
         '10.134.49.223',
         '10.26.48.25',
     ]
@@ -183,8 +188,6 @@ class config inherits config::base {
 
     $vmwaretools_version = "9.0.5-1065307"
     $vmwaretools_md5 = "924b75b0b522eb462266cf3c24c98837"
-    $collectd_graphite_cluster_fqdn = "graphite-relay.private.scl3.mozilla.com"
-    $collectd_graphite_prefix = "hosts."
     $releaserunner_notify_from = "Release Eng <release@mozilla.com>"
     $releaserunner_notify_to = "Release Eng <release@mozilla.com>"
     $releaserunner_smtp_server = "localhost"
@@ -218,4 +221,20 @@ class config inherits config::base {
     $slaverebooter_mail_to = "release@mozilla.com"
 
     $buildmaster_ssh_keys = [ 'b2gbld_dsa', 'b2gtry_dsa', 'ffxbld_dsa', 'tbirdbld_dsa', 'trybld_dsa', 'xrbld_dsa' ]
+
+    $collectd_write = {
+        graphite_nodes => {
+            'graphite-relay.private.scl3.mozilla.com' => {
+                'port' => '2003', 'prefix' => 'hosts.',
+            },
+        },
+    }
+
+    # hosted graphite settings
+    $diamond_graphite_host = "carbon.hostedgraphite.com"
+    $diamond_graphite_port = "2003"
+    $diamond_graphite_path_prefix = secret('diamond_api_key')
+    $diamond_batch_size = 1
+    $diamond_poll_interval = 30
+
 }

@@ -119,6 +119,8 @@ node /bld-.*\.build\.releng\.(use1|usw2)\.mozilla.com/ {
         "network::aws": stage => network,
     }
     include toplevel::slave::build::mock
+    include diamond
+    include instance_metadata::diamond
 }
 
 node /try-.*\.try\.releng\.(use1|usw2)\.mozilla.com/ {
@@ -128,6 +130,8 @@ node /try-.*\.try\.releng\.(use1|usw2)\.mozilla.com/ {
         "network::aws": stage => network,
     }
     include toplevel::slave::build::mock
+    include diamond
+    include instance_metadata::diamond
 }
 
 node /dev-.*\.dev\.releng\.(use1|usw2)\.mozilla.com/ {
@@ -138,6 +142,8 @@ node /dev-.*\.dev\.releng\.(use1|usw2)\.mozilla.com/ {
         "network::aws": stage => network,
     }
     include toplevel::slave::build::mock
+    include diamond
+    include instance_metadata::diamond
 }
 
 ## signing
@@ -435,111 +441,81 @@ node "buildbot-master69.srv.releng.use1.mozilla.com" {
 
 node "buildbot-master70.srv.releng.use1.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
-        "bm70-tests1-windows":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-windows";
+        "bm70-build1":
+            http_port => 8001,
+            master_type => "build",
+            basedir => "build1";
     }
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master71.srv.releng.use1.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
-        "bm71-tests1-windows":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-windows";
+        "bm71-build1":
+            http_port => 8001,
+            master_type => "build",
+            basedir => "build1";
     }
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master72.srv.releng.usw2.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
-        "bm72-tests1-windows":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-windows";
+        "bm72-build1":
+            http_port => 8001,
+            master_type => "build",
+            basedir => "build1";
     }
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master73.srv.releng.usw2.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
-        "bm73-tests1-windows":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-windows";
+        "bm73-build1":
+            http_port => 8001,
+            master_type => "build",
+            basedir => "build1";
     }
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master74.srv.releng.usw2.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
-        "bm74-tests1-windows":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-windows";
+        "bm74-build1":
+            http_port => 8001,
+            master_type => "build",
+            basedir => "build1";
     }
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master75.srv.releng.use1.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm75-tests1-macosx":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-macosx";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master76.srv.releng.use1.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm76-tests1-macosx":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-macosx";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master77.srv.releng.use1.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm77-tests1-macosx":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-macosx";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master78.srv.releng.usw2.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm78-tests1-macosx":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-macosx";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master79.srv.releng.usw2.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm79-tests1-macosx":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-macosx";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master80.srv.releng.usw2.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm80-tests1-macosx":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-macosx";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
@@ -642,92 +618,47 @@ node "buildbot-master89.srv.releng.scl3.mozilla.com" {
 }
 
 node "buildbot-master90.srv.releng.use1.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm90-tests1-panda":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-panda";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master91.srv.releng.usw2.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm91-tests1-panda":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-panda";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master92.srv.releng.use1.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm92-tests1-panda":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-panda";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master93.srv.releng.usw2.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm93-tests1-panda":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-panda";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master94.srv.releng.use1.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm94-tests1-panda":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-panda";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master95.srv.releng.usw2.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm95-tests1-tegra":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-tegra";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master96.srv.releng.use1.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm96-tests1-tegra":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-tegra";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master97.srv.releng.usw2.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm97-tests1-tegra":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-tegra";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
 node "buildbot-master98.srv.releng.use1.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm98-tests1-tegra":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-tegra";
-    }
+    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
