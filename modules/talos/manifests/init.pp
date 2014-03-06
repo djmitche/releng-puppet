@@ -7,6 +7,7 @@ class talos {
     include packages::xvfb
     include users::builder
     include dirs::builds::slave
+    include packages::nodejs
 
     # Due to different tests and flavors of tests run on different platforms,
     # each has a peculiar set of packages required, with little or no overlap.
@@ -15,7 +16,6 @@ class talos {
     case $::operatingsystem {
         Ubuntu: {
             # Ubuntu specific packages
-            include packages::nodejs
             include packages::llvm
             include packages::sox
             # required for the 32-bit reftests per :ahal, bug 837268
