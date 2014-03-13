@@ -55,7 +55,7 @@ class config inherits config::base {
     $user_python_repositories = [ "http://pypi.pvt.build.mozilla.org/pub", "http://pypi.pub.build.mozilla.org/pub" ]
 
     $nrpe_allowed_hosts = "10.2.71.20,10.12.75.9,127.0.0.1,10.26.75.30"
-    $ntp_server = "ntp.build.mozilla.org"
+    $ntp_server = "time.mozilla.org"
 
     $signer_username = 'cltsign'
     $signing_tools_repo = 'https://hg.mozilla.org/build/tools'
@@ -79,7 +79,6 @@ class config inherits config::base {
         '10.250.48.0/22',
     ]
     $signing_new_token_allowed_ips = [
-        '10.12.48.14',
         '10.26.48.41',
         '10.26.48.52',
         '10.26.48.53',
@@ -89,17 +88,22 @@ class config inherits config::base {
         '10.26.48.57',
         '10.132.49.94',
         '10.132.49.112',
+        '10.132.49.117',
         '10.132.49.125',
+        '10.132.49.158',
         '10.132.49.181',
         '10.132.50.44',
         '10.132.50.56',
         '10.132.50.54',
         '10.132.50.142',
         '10.132.50.247',
+        '10.134.48.40',
+        '10.134.48.158',
         '10.134.48.196',
         '10.134.48.228',
         '10.134.48.236',
         '10.134.49.62',
+        '10.134.49.77',
         '10.134.49.93',
         '10.134.49.94',
         '10.134.49.111',
