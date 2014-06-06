@@ -2,6 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+node "localhost.fritz.box" {
+    include toplevel::server::puppetmaster
+}
+
+
 node "vagrant-ubuntu-trusty-64.fritz.box" {
     include toplevel::slave::qa::mozmill_ci
 }
@@ -31,18 +36,22 @@ node "puppetmaster1.qa.scl3.mozilla.com" {
 ### Mozmill-CI staging
 
 node "mm-ci-staging.qa.scl3.mozilla.com" {
+    $aspects = [ "staging" ]
     include toplevel::server::mozmill_ci
 }
 
 node /^mm-osx-\d+\.qa\.scl3\.mozilla\.com$/ {
+    $aspects = [ "staging" ]
     include toplevel::slave::qa::mozmill_ci
 }
 
 node /^mm-ub-\d+-\d+\.qa\.scl3\.mozilla\.com$/ {
+    $aspects = [ "staging" ]
     include toplevel::slave::qa::mozmill_ci
 }
 
 node /^mm-win-\w+-\d+\.qa\.scl3\.mozilla\.com$/ {
+    $aspects = [ "staging" ]
     include toplevel::slave::qa::mozmill_ci
 }
 
