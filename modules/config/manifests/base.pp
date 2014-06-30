@@ -113,11 +113,13 @@ class config::base {
     # a hash of collectd write modules and there configurations.
     # If undef, module is disabled
     $collectd_write = undef
-    
-    # if set, this is the URL of the HTTP/HTTPS/FTP proxy through which all
-    # outgoing access will be routed.  The exceptions are a list of hostnames
-    # or .-prefixed hostname suffixes which will not be routed through the proxy.
-    $web_proxy_url = ''
+
+    # Those are the host and port of the HTTP/HTTPS/FTP proxy through which all
+    # outgoing access will be routed. If the URL is not set, no proxy is used.
+    # The exceptions are a list of hostnames or .-prefixed hostname suffixes
+    # which will not be routed through the proxy.
+    $web_proxy_host = ''
+    $web_proxy_port = ''
     $web_proxy_exceptions = ['localhost', '127.0.0.1', 'localaddress', '.localdomain.com']
 
     # Physical location of the node, for organizations that need to distinguish
@@ -261,6 +263,10 @@ class config::base {
     $buildduty_username = 'buildduty'
     # root directory for aws_manager; this must be under /builds
     $aws_manager_root = "/builds/aws_manager"
+    # s3 bucket for s3 aws_manager logs parsing
+    $cloudtrail_s3_bucket = ""
+    # s3 prefix name for aws_manager log parsing
+    $cloudtrail_s3_base_prefix = ""
     # mercurial repository and branch for cloud-tools
     $cloud_tools_hg_repo = "http://hg.mozilla.org/build/cloud-tools"
     $cloud_tools_hg_branch = "default"
