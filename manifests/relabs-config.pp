@@ -58,20 +58,16 @@ class config inherits config::base {
     $vmwaretools_md5 = "4a2d230828919048c0c3ae8420f8edfe"
 
     $ntp_server = "time.mozilla.org"
-    $admin_users = [
-        "arr",
-        "bhearsum",
-        "catlee",
-        "dmitchell",
-        "jwatkins",
-        "jwood",
-        "raliiev",
-        "cknowles",
-        "dmaher",
-        "hskupin",
-        "pchiasson",
-        "tglek",
-        "jvehent",
-    ]
+
+    $admin_users = unique(concat([
+            # various people who have used relabs at one point:
+            'tglek',
+            'hskupin',
+            'dmaher',
+            'pchiasson',
+        ],
+        hiera('ldap_admin_users',
+            # backup to ensure access in case the sync fails:
+            ['arr', 'dmitchell', 'jwatkins'])))
 }
 
