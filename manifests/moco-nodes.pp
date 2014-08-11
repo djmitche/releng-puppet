@@ -93,6 +93,12 @@ node /(mac-(v2-|)|)signing\d+\.srv\.releng\.scl3\.mozilla\.com/ {
     # all mac and linux signing servers
     include toplevel::server::signing
 }
+node "r5-mini-002.srv.releng.scl3.mozilla.com" {
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $pin_puppet_env = "dmitchell"
+    include toplevel::server::signing
+}
+
 
 ## puppetmasters
 
