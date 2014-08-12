@@ -4,147 +4,69 @@
 
 ## foopies
 
-node /foopy\d+.tegra.releng.scl3.mozilla.com/ {
-    include toplevel::server::foopy
-}
-
-node /foopy\d+\.p\d+\.releng\.(scl1|scl3)\.mozilla\.com/ {
+node /foopy\d+\.\w+\.releng\.scl3\.mozilla\.com/ {
+    # covers pN and tegra vlans
     include toplevel::server::foopy
 }
 
 ## testers
 
-node "r4-mini-001.test.releng.scl3.mozilla.com" {
+# linux64 and OS X
+node /t.*-\d+\.test\.releng\.scl3\.mozilla\.com/ {
+    # hosts starting with t and ending in -digit.test.releng.scl3.mozilla.com
     $slave_trustlevel = 'try'
     include toplevel::slave::releng::test::gpu
 }
 
-node /talos-r4-snow-\d+.build.scl1.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::test::gpu
-}
-
-node /t-snow-r4-\d+.test.releng.scl3.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::test::gpu
-}
-
-node /talos-r4-lion-\d+.build.scl1.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::test::gpu
-}
-
-node /talos-mtnlion-r5-\d+.test.releng.scl3.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::test::gpu
-}
-
-node /t-mavericks-r5-\d+.test.releng.scl3.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::test::gpu
-}
-
-node /tst-.*\.build\.aws-.*\.mozilla\.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::test::headless
-}
+# AWS
 
 node /tst-.*\.test\.releng\.(use1|usw2)\.mozilla\.com/ {
+    # tst-anything in any region of the test.releng mozilla zones
     $slave_trustlevel = 'try'
     include toplevel::slave::releng::test::headless
 }
 
-node /talos-linux\d+-ix-\d+\.test\.releng\.scl3\.mozilla\.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::test::gpu
-}
-
+# Windows
 node /t-w732-ix-\d+.wintest.releng.scl3.mozilla.com/ {
+    # windows 7 nodes in wintest.releng.scl3.mozilla.com
     include toplevel::base
 }
 
 ## builders
 
-node /bld-linux64-ix-0(\d+).build.scl1.mozilla.com/ {
-    # determine the slave's trustlevel from slavealloc; this case is only
-    # required in the "old" datacenters; in new datacenters, trustlevel is
-    # based on VLAN atom.
-    if $clientcert =~ /bld-linux64-ix-0(\d+).build.scl1.mozilla.com/ {
-        if $1 <= 26 {
-            # decommed
-        } elsif $1 <= 37 {
-            $slave_trustlevel = 'core'
-        } elsif $1 <= 53 {
-            $slave_trustlevel = 'try'
-        }
-    }
-    include toplevel::slave::releng::build::mock
-}
-
-node /b-linux64-ix-\d+.build.releng.scl3.mozilla.com/ {
+# linux64
+node /b-linux64-\w+-\d+.build.releng.scl3.mozilla.com/ {
+    # any b-linux64-(something)-digit host in the scl3 build zone
     $slave_trustlevel = 'core'
     include toplevel::slave::releng::build::mock
-}
-
-node /b-linux64-ix-\d+.try.releng.scl3.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::build::mock
-}
-
-node /b-linux64-hp-0*(\d+).build.scl1.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::build::mock
-}
-
-node /b-linux64-hp-\d+.build.releng.scl3.mozilla.com/ {
-    $slave_trustlevel = 'core'
-    include toplevel::slave::releng::build::mock
-}
-
-node /b-linux64-hp-\d+.try.releng.scl3.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::build::mock
-}
-
-node /bld-centos6-hp-0*(\d+).build.scl1.mozilla.com/ {
-    # determine the slave's trustlevel from slavealloc; this case is only
-    # required in the "old" datacenters; in new datacenters, trustlevel is
-    # based on VLAN atom.
-    if $clientcert =~ /bld-centos6-hp-0*(\d+).build.scl1.mozilla.com/ {
-        if $1 <= 19 {
-            $slave_trustlevel = 'core'
-        } elsif $1 <= 42 {
-            $slave_trustlevel = 'try'
-        }
-    }
-    include toplevel::slave::releng::build::mock
-}
-
-node /bld-lion-r5-\d+.try.releng.scl3.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::build::standard
-}
-
-node /bld-lion-r5-\d+.build.releng.scl3.mozilla.com/ {
-    $slave_trustlevel = 'core'
-    include toplevel::slave::releng::build::standard
 }
 
 node /bld-.*\.build\.releng\.(use1|usw2)\.mozilla.com/ {
+    # any bld-(something) host in the use1 and usw2 releng build zones
     $slave_trustlevel = 'core'
     include toplevel::slave::releng::build::mock
     include diamond
     include instance_metadata::diamond
 }
 
-node /try-.*\.try\.releng\.(use1|usw2)\.mozilla.com/ {
-    $slave_trustlevel = 'try'
-    include toplevel::slave::releng::build::mock
-    include diamond
-    include instance_metadata::diamond
+# OS X
+node /bld-lion-r5-\d+\.build\.releng\.scl3\.mozilla\.com/ {
+    # any bld-lion-r5-(digit) hosts in the scl3 build zone
+    $slave_trustlevel = 'core'
+    include toplevel::slave::releng::build::standard
 }
 
-node /dev-.*\.dev\.releng\.(use1|usw2)\.mozilla.com/ {
+## try builders
+
+#linux64
+node /b-linux64-\w+-\d+.try.releng.scl3.mozilla.com/ {
+    # any b-linux64-(something)-digit host in the scl3 try zone
+    $slave_trustlevel = 'try'
+    include toplevel::slave::releng::build::mock
+}
+
+node /(dev|try)-.*\.(dev|try)\.releng\.(use1|usw2)\.mozilla.com/ {
+    # any dev or try node in the dev or try zones of use1 and usw2
     # dev-* hosts are *always* staging
     $slave_trustlevel = 'try'
     include toplevel::slave::releng::build::mock
@@ -152,37 +74,31 @@ node /dev-.*\.dev\.releng\.(use1|usw2)\.mozilla.com/ {
     include instance_metadata::diamond
 }
 
-## signing
-
-node /signing[456].srv.releng.scl3.mozilla.com/ {
-    include toplevel::server::signing
+# OS X
+node /bld-lion-r5-\d+.try.releng.scl3.mozilla.com/ {
+    # any bld-lion-r5-(digit) hosts in the scl3 try zone
+    $slave_trustlevel = 'try'
+    include toplevel::slave::releng::build::standard
 }
 
-node /mac-signing[1234].srv.releng.scl3.mozilla.com/ {
+## signing servers
+
+node /(mac-(v2-|)|)signing\d+\.srv\.releng\.scl3\.mozilla\.com/ {
+    # all mac and linux signing servers
     include toplevel::server::signing
 }
 
 ## puppetmasters
 
-node /puppetmaster-\d+\..*\.aws-.*\.mozilla\.com/ {
-    include toplevel::server::puppetmaster
-}
-node "releng-puppet1.srv.releng.scl3.mozilla.com" {
-    include toplevel::server::puppetmaster
-}
-node "releng-puppet2.srv.releng.scl3.mozilla.com" {
-    include toplevel::server::puppetmaster
-}
-node "releng-puppet2.build.scl1.mozilla.com" {
-    include toplevel::server::puppetmaster
-}
-node /releng-puppet\d\.srv\.releng\.(use1|usw2)\.mozilla\.com/ {
+node /releng-puppet\d+\.srv\.releng\.(scl3|use1|usw2)\.mozilla\.com/ {
+    # all non-legacy puppet masters in all releng datacenters
     include toplevel::server::puppetmaster
 }
 
 ## casper imaging servers
 
 node /casper-fs-\d+\.srv\.releng\.scl3\.mozilla\.com/ {
+    # casper fileserver
     include toplevel::server
     include casper::fileserver
 }
@@ -197,33 +113,35 @@ node /casper-netboot-\d+\.srv\.releng\.scl3\.mozilla\.com/ {
 
 ## openstack admin servers
 
-node /ironic\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
+node /controller\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $pin_puppet_env = "jwatkins"
+    $aspects = [ "staging" ]
     include toplevel::server
 }
 
-node /glance\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
+node /glance-controller\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $pin_puppet_env = "jwatkins"
+    $aspects = [ "staging" ]
     include toplevel::server
 }
 
-node /keystone\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
-    include toplevel::server
-}
-
-node /horizon\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
-    include toplevel::server
-}
-
-node /neutron\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
+node /network-node\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $pin_puppet_env = "jwatkins"
+    $aspects = [ "staging" ]
     include toplevel::server
 }
 
 ## Misc servers
 
+# aws-manager
 node "aws-manager1.srv.releng.scl3.mozilla.com" {
     include toplevel::server::aws_manager
 }
 
-## slaveapi
+# slaveapi
 
 node "slaveapi1.srv.releng.scl3.mozilla.com" {
     include toplevel::server::slaveapi
@@ -234,23 +152,39 @@ node "slaveapi-dev1.srv.releng.scl3.mozilla.com" {
     include toplevel::server::slaveapi
 }
 
-## mozpool servers
+# mozpool servers
 
-node /mobile-imaging-stage1\.p127\.releng\.(scl1|scl3)\.mozilla\.com/ {
+node /mobile-imaging-stage1\.p127\.releng\.scl3\.mozilla\.com/ {
     $aspects = [ "staging" ]
-    $is_bmm_admin_host = true
+    $is_bmm_admin_host = $fqdn ? { /.*scl3\.mozilla\.com$/ => true, default => false }
+    include toplevel::server::mozpool
+    users::root::extra_authorized_key {
+        'mcote': ;
+    }
+    shared::execonce {
+        'test-exec':
+            command => "/bin/touch /tmp/foo";
+    }
+}
+
+node /mobile-imaging-\d+\.p\d+\.releng\.scl3\.mozilla\.com/ {
+    $is_bmm_admin_host = $fqdn ? { /^mobile-imaging-001/ => true, default => false }
     include toplevel::server::mozpool
     users::root::extra_authorized_key {
         'mcote': ;
     }
 }
 
-node /mobile-imaging-\d+\.p\d+\.releng\.(scl1|scl3)\.mozilla\.com/ {
-    $is_bmm_admin_host = $fqdn ? { /^mobile-imaging-001/ => true, default => false }
-    include toplevel::server::mozpool
-    users::root::extra_authorized_key {
-        'mcote': ;
-    }
+# Package Builders
+
+node /.*packager\d+\.srv\.releng\.use1\.mozilla\.com/ {
+    # RPM and DPKG package servers
+    include toplevel::server::pkgbuilder
+}
+
+node /celery\d+.srv.releng.scl3.mozilla.com/ {
+    # all celery nodes in srv.releng.scl3.mozilla.com
+    include toplevel::server
 }
 
 ## buildbot masters
@@ -364,61 +298,6 @@ node "buildbot-master54.srv.releng.usw2.mozilla.com" {
             master_type => "tests",
             basedir => "tests1-linux64";
     }
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master55.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master56.srv.releng.usw2.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master57.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master58.srv.releng.usw2.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master59.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master60.srv.releng.usw2.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master61.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master62.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master63.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master64.srv.releng.usw2.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master65.srv.releng.usw2.mozilla.com" {
-    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
@@ -568,11 +447,6 @@ node "buildbot-master79.srv.releng.usw2.mozilla.com" {
     include toplevel::server::buildmaster::mozilla
 }
 
-node "buildbot-master80.srv.releng.usw2.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
 node "buildbot-master81.srv.releng.scl3.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
         "bm81-build_scheduler":
@@ -670,11 +544,6 @@ node "buildbot-master89.srv.releng.scl3.mozilla.com" {
     include toplevel::server::buildmaster::mozilla
 }
 
-node "buildbot-master90.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
 node "buildbot-master91.srv.releng.usw2.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
         "bm91-build1":
@@ -685,15 +554,6 @@ node "buildbot-master91.srv.releng.usw2.mozilla.com" {
     include toplevel::server::buildmaster::mozilla
 }
 
-node "buildbot-master92.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master93.srv.releng.usw2.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
 
 node "buildbot-master94.srv.releng.use1.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
@@ -702,26 +562,6 @@ node "buildbot-master94.srv.releng.use1.mozilla.com" {
             master_type => "build",
             basedir => "build1";
     }
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master95.srv.releng.usw2.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master96.srv.releng.use1.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master97.srv.releng.usw2.mozilla.com" {
-    # Free Master
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master98.srv.releng.use1.mozilla.com" {
-    # Free Master
     include toplevel::server::buildmaster::mozilla
 }
 
@@ -905,18 +745,24 @@ node "buildbot-master116.srv.releng.usw2.mozilla.com" {
     include toplevel::server::buildmaster::mozilla
 }
 
-# Package Builders
-
-node "ubuntu64packager1.srv.releng.use1.mozilla.com" {
-    include toplevel::server::pkgbuilder
+node "buildbot-master117.bb.releng.use1.mozilla.com" {
+    buildmaster::buildbot_master::mozilla {
+        "bm117-tests1-linux64":
+            http_port => 8201,
+            master_type => "tests",
+            basedir => "tests1-linux64";
+    }
+    include toplevel::server::buildmaster::mozilla
 }
 
-node "rpmpackager1.srv.releng.use1.mozilla.com" {
-    include toplevel::server::pkgbuilder
+node "buildbot-master118.bb.releng.usw2.mozilla.com" {
+    buildmaster::buildbot_master::mozilla {
+        "bm118-tests1-linux64":
+            http_port => 8201,
+            master_type => "tests",
+            basedir => "tests1-linux64";
+    }
+    include toplevel::server::buildmaster::mozilla
 }
 
-node /celery\d+.srv.releng.scl3.mozilla.com/ {
-    include toplevel::server
-}
-
-# Loaners
+## Loaners

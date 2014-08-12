@@ -24,13 +24,22 @@ class config inherits config::base {
     $puppet_server_reports = "http"
     $puppet_server_reporturl = "http://foreman.pvt.build.mozilla.org:3001/"
     $puppet_server_facturl = "http://foreman.pvt.build.mozilla.org:3000/"
-    # temporarily disabled for bug 999661
-    #$puppetmaster_upstream_rsync_source = 'rsync://puppetagain.pub.build.mozilla.org/data/'
+    $puppetmaster_upstream_rsync_source = 'rsync://puppetagain.pub.build.mozilla.org/data/'
     $puppetmaster_public_mirror_hosts = [ ]
     $puppetmaster_extsyncs = {
         'slavealloc' => {
             'slavealloc_api_url' => 'http://slavealloc.pvt.build.mozilla.org/api/',
         },
+        'moco_ldap' => {
+            'moco_ldap_uri' => 'ldap://ldap.db.scl3.mozilla.com/',
+            'moco_ldap_root' => 'dc=mozilla',
+            'moco_ldap_dn' => secret('moco_ldap_dn'),
+            'moco_ldap_pass' => secret('moco_ldap_pass'),
+            'users_in_groups' => {
+                'ldap_admin_users' => ['releng', 'relops',
+                'netops', 'team_dcops', 'team_opsec', 'team_moc', 'team_infra', 'team_storage'],
+            },
+        }
     }
 
     $signer_username = 'relabssign'
@@ -62,6 +71,7 @@ class config inherits config::base {
         "hskupin",
         "pchiasson",
         "tglek",
+        "jvehent",
     ]
 }
 

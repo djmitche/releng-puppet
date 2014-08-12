@@ -18,9 +18,6 @@ class config inherits config::base {
     # we use the sort_servers_by_group function to sort the list of servers, and then just use
     # the first as the primary server
     $grouped_puppet_servers = {
-        ".*\\.scl1\\.mozilla\\.com" => [
-           "releng-puppet2.build.scl1.mozilla.com",
-        ],
         ".*\\.releng\\.scl3\\.mozilla\\.com" => [
            "releng-puppet1.srv.releng.scl3.mozilla.com",
            "releng-puppet2.srv.releng.scl3.mozilla.com",
@@ -40,7 +37,6 @@ class config inherits config::base {
     $data_server = $puppet_server
 
     $node_location = $fqdn? {
-        /.*\.scl1\.mozilla\.com/ => 'in-house',
         /.*\.scl3\.mozilla\.com/ => 'in-house',
         /.*\.use1\.mozilla\.com/ => 'aws',
         /.*\.usw2\.mozilla\.com/ => 'aws',
@@ -59,21 +55,29 @@ class config inherits config::base {
         'slavealloc' => {
             'slavealloc_api_url' => 'http://slavealloc.pvt.build.mozilla.org/api/',
         },
+        'moco_ldap' => {
+            'moco_ldap_uri' => 'ldap://ldap.db.scl3.mozilla.com/',
+            'moco_ldap_root' => 'dc=mozilla',
+            'moco_ldap_dn' => secret('moco_ldap_dn'),
+            'moco_ldap_pass' => secret('moco_ldap_pass'),
+            'users_in_groups' => {
+                'ldap_admin_users' => ['releng', 'relops',
+                    'netops', 'team_dcops', 'team_opsec', 'team_moc', 'team_infra', 'team_storage'],
+            },
+        }
     }
     $puppetmaster_syslog_server = "syslog1.private.scl3.mozilla.com"
 
     $user_python_repositories = [ "http://pypi.pvt.build.mozilla.org/pub", "http://pypi.pub.build.mozilla.org/pub" ]
 
-    $nrpe_allowed_hosts = "10.2.71.20,10.12.75.9,127.0.0.1,10.26.75.30"
+    $nrpe_allowed_hosts = "127.0.0.1,10.26.75.30"
     $ntp_server = "time.mozilla.org"
+    $relayhost = "[smtp.mozilla.org]"
 
     $signer_username = 'cltsign'
     $signing_tools_repo = 'https://hg.mozilla.org/build/tools'
-    $signing_redis_host = 'redis01.build.scl1.mozilla.com'
     $signing_mac_id = 'Mozilla'
     $signing_allowed_ips = [
-        '10.12.40.0/22',
-        '10.12.48.0/21',
         '10.26.36.0/22',
         '10.26.40.0/22',
         '10.26.48.0/24',
@@ -113,7 +117,7 @@ class config inherits config::base {
 
     $admin_users = $fqdn ? {
         # signing machines have a very limited access list
-        /^(mac-)?signing\d\..*/ => [
+        /^(mac-(v2-|))?signing\d\..*/ => [
             # a few folks from relops..
             'arr',
             'dmitchell',
@@ -196,7 +200,7 @@ class config inherits config::base {
     $vmwaretools_version = "9.4.0-1280544"
     $vmwaretools_md5 = "4a2d230828919048c0c3ae8420f8edfe"
     $releaserunner_notify_from = "Release Eng <release@mozilla.com>"
-    $releaserunner_notify_to = "Release Eng <release@mozilla.com>"
+    $releaserunner_notify_to = "Release Drivers <release-drivers@mozilla.org>"
     $releaserunner_smtp_server = "localhost"
     $releaserunner_hg_host = "hg.mozilla.org"
     $releaserunner_hg_username = "ffxbld"
@@ -248,6 +252,22 @@ class config inherits config::base {
     $diamond_graphite_path_prefix = secret('diamond_api_key')
     $diamond_batch_size = 1
     $diamond_poll_interval = 30
+
+
+    # runner task settings
+    $runner_hg_tools_path = '/tools/checkouts/build-tools'
+    $runner_hg_tools_repo = 'https://hg.mozilla.org/build/tools'
+    $runner_hg_tools_branch = 'default'
+    $runner_hg_mozharness_path = '/tools/checkouts/mozharness'
+    $runner_hg_mozharness_repo = 'https://hg.mozilla.org/build/mozharness'
+    $runner_hg_mozharness_branch = 'production'
+
+    $runner_env_hg_share_base_dir = '/builds/hg-shared'
+    $runner_env_git_share_base_dir = '/builds/git-shared'
+
+    $runner_buildbot_slave_dir = '/builds/slave'
+
+
 
     $xcode_version = $::macosx_productversion_major ? {
         10.6 => "4.2",

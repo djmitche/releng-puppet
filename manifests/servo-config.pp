@@ -23,7 +23,23 @@ class config inherits config::base {
     $puppet_again_repo = "https://hg.mozilla.org/build/puppet/"
     $puppetmaster_upstream_rsync_source = 'rsync://puppetagain.pub.build.mozilla.org/data/'
 
-    $nrpe_allowed_hosts = "10.2.71.20,10.12.75.9,127.0.0.1,10.26.75.30"
+    $puppetmaster_extsyncs = {
+        'slavealloc' => {
+            'slavealloc_api_url' => 'http://slavealloc.pvt.build.mozilla.org/api/',
+        },
+        'moco_ldap' => {
+            'moco_ldap_uri' => 'ldap://ldap.db.scl3.mozilla.com/',
+            'moco_ldap_root' => 'dc=mozilla',
+            'moco_ldap_dn' => secret('moco_ldap_dn'),
+            'moco_ldap_pass' => secret('moco_ldap_pass'),
+            'users_in_groups' => {
+                'ldap_admin_users' => ['releng', 'relops', 'netops', 'team_dcops', 'team_opsec',
+                                      'team_moc', 'team_infra', 'team_storage', 'vpn_servo'],
+            },
+        }
+    }
+
+    $nrpe_allowed_hosts = "127.0.0.1,10.26.75.30"
     $ntp_server = "time.mozilla.org"
     $admin_users = [
         # Servo users who should be kept when syncing from LDAP:
