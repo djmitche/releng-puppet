@@ -8,35 +8,39 @@ class aws_manager::cron {
 
     aws_manager::crontask {
         "aws_watch_pending.py":
-            ensure         => present,
-            minute        => '*/5',
-            cwd            => "${aws_manager::settings::cloud_tools_dst}/scripts",
-            virtualenv_dir => "${aws_manager::settings::root}",
-            user           => "${users::buildduty::username}",
-            params         => "-k ${aws_manager::settings::secrets_dir}/aws-secrets.json -c ../configs/watch_pending.cfg -r us-west-2 -r us-east-1 -l ${aws_manager::settings::root}/aws_watch_pending.log";
+            ensure          => present,
+            minute          => '*/5',
+            process_timeout => 1200,
+            cwd             => "${aws_manager::settings::cloud_tools_dst}/scripts",
+            virtualenv_dir  => "${aws_manager::settings::root}",
+            user            => "${users::buildduty::username}",
+            params          => "-k ${aws_manager::settings::secrets_dir}/aws-secrets.json -c ../configs/watch_pending.cfg -r us-west-2 -r us-east-1 -l ${aws_manager::settings::root}/aws_watch_pending.log";
         "aws_watch_pending_servo":
-            script         => "aws_watch_pending.py",
-            ensure         => present,
-            minute         => '*/5',
-            cwd            => "${aws_manager::settings::cloud_tools_dst}/scripts",
-            virtualenv_dir => "${aws_manager::settings::root}",
-            user           => "${users::buildduty::username}",
-            params         => "-k ${aws_manager::settings::secrets_dir}/aws-secrets-servo.json -c ../configs/watch_pending_servo.cfg -r us-east-1 -l ${aws_manager::settings::root}/aws_watch_pending_servo.log";
+            script          => "aws_watch_pending.py",
+            ensure          => present,
+            minute          => '*/5',
+            process_timeout => 1200,
+            cwd             => "${aws_manager::settings::cloud_tools_dst}/scripts",
+            virtualenv_dir  => "${aws_manager::settings::root}",
+            user            => "${users::buildduty::username}",
+            params          => "-k ${aws_manager::settings::secrets_dir}/aws-secrets-servo.json -c ../configs/watch_pending_servo.cfg -r us-east-1 -l ${aws_manager::settings::root}/aws_watch_pending_servo.log";
         "aws_stop_idle.py":
-            ensure         => present,
-            minute         => '*/10',
-            cwd            => "${aws_manager::settings::cloud_tools_dst}/scripts",
-            virtualenv_dir => "${aws_manager::settings::root}",
-            user           => "${users::buildduty::username}",
-            params         => "-c ${aws_manager::settings::secrets_dir}/passwords.json -r us-west-2 -r us-east-1 -j32 -l ${aws_manager::settings::root}/aws_stop_idle.log -t bld-linux64 -t tst-linux64 -t tst-linux32 -t try-linux64";
+            ensure          => present,
+            minute          => '*/10',
+            process_timeout => 1200,
+            cwd             => "${aws_manager::settings::cloud_tools_dst}/scripts",
+            virtualenv_dir  => "${aws_manager::settings::root}",
+            user            => "${users::buildduty::username}",
+            params          => "-c ${aws_manager::settings::secrets_dir}/passwords.json -r us-west-2 -r us-east-1 -j32 -l ${aws_manager::settings::root}/aws_stop_idle.log -t bld-linux64 -t tst-linux64 -t tst-linux32 -t tst-emulator64 -t try-linux64";
         "aws_stop_idle_servo":
-            script         => "aws_stop_idle.py",
-            ensure         => present,
-            minute         => '*/10',
-            cwd            => "${aws_manager::settings::cloud_tools_dst}/scripts",
-            virtualenv_dir => "${aws_manager::settings::root}",
-            user           => "${users::buildduty::username}",
-            params         => "-c ${aws_manager::settings::secrets_dir}/passwords-servo.json -r us-east-1 -j32 -l ${aws_manager::settings::root}/aws_stop_idle_servo.log -t servo-linux64";
+            script          => "aws_stop_idle.py",
+            ensure          => present,
+            minute          => '*/10',
+            process_timeout => 1200,
+            cwd             => "${aws_manager::settings::cloud_tools_dst}/scripts",
+            virtualenv_dir  => "${aws_manager::settings::root}",
+            user            => "${users::buildduty::username}",
+            params          => "-c ${aws_manager::settings::secrets_dir}/passwords-servo.json -r us-east-1 -j32 -l ${aws_manager::settings::root}/aws_stop_idle_servo.log -t servo-linux64";
         "aws_sanity_checker.py":
             ensure         => present,
             minute        => '0,30',
@@ -65,7 +69,7 @@ class aws_manager::cron {
             virtualenv_dir => "${aws_manager::settings::root}",
             user           => "${users::buildduty::username}";
         "delete_old_spot_amis.py":
-            params         => "-c tst-linux64 -c tst-linux32 -c try-linux64 -c bld-linux64",
+            params         => "-c tst-linux64 -c tst-linux32 -c try-linux64 -c bld-linux64 -c tst-emulator64",
             ensure         => present,
             minute         => '30',
             hour           => '1',
@@ -108,6 +112,15 @@ class aws_manager::cron {
             virtualenv_dir => "${aws_manager::settings::root}",
             user           => "${users::buildduty::username}",
             params         => "-c ../configs/tst-linux32 -r us-east-1 -s aws-releng -k ${aws_manager::settings::secrets_dir}/aws-secrets.json --ssh-key ${users::buildduty::home}/.ssh/aws-ssh-key -i ../instance_data/us-east-1.instance_data_tests.json --create-ami --ignore-subnet-check --copy-to-region us-west-2 tst-linux32-ec2-golden";
+        "tst-emulator64-ec2-golden":
+            script         => "aws_create_instance.py",
+            ensure         => present,
+            minute         => '45',
+            hour           => '1',
+            cwd            => "${aws_manager::settings::cloud_tools_dst}/scripts",
+            virtualenv_dir => "${aws_manager::settings::root}",
+            user           => "${users::buildduty::username}",
+            params         => "-c ../configs/tst-emulator64 -r us-east-1 -s aws-releng -k ${aws_manager::settings::secrets_dir}/aws-secrets.json --ssh-key ${users::buildduty::home}/.ssh/aws-ssh-key -i ../instance_data/us-east-1.instance_data_tests.json --create-ami --ignore-subnet-check --copy-to-region us-west-2 tst-emulator64-ec2-golden";
         "aws_get_cloudtrail_logs.py":
             ensure         => present,
             minute         => '35,15',
@@ -122,6 +135,13 @@ class aws_manager::cron {
             virtualenv_dir => "${aws_manager::settings::root}",
             user           => "${users::buildduty::username}",
             params         => "--cloudtrail-dir ${aws_manager::settings::cloudtrail_logs_dir} --events-dir ${aws_manager::settings::events_dir}";
+        "aws_clean_log_dir.py":
+            ensure         => present,
+            minute         => '15,40',
+            cwd            => "${aws_manager::settings::cloud_tools_dst}/scripts",
+            virtualenv_dir => "${aws_manager::settings::root}",
+            user           => "${users::buildduty::username}",
+            params         => "--cache-dir ${aws_manager::settings::cloudtrail_logs_dir} --events-dir ${aws_manager::settings::events_dir} --s3-base-prefix ${::config::cloudtrail_s3_base_prefix}";
     }
 
     file {
