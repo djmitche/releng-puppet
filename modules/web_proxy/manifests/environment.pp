@@ -3,7 +3,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 class web_proxy::environment {
-    if $web_proxy::host != "" {
+    $proxy_enabled = $web_proxy::host != ""
+
+    if $proxy_enabled {
         case $operatingsystem {
             Darwin,
             CentOS,
