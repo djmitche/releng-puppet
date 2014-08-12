@@ -31,20 +31,22 @@ class config inherits config::base {
             'moco_ldap_dn' => secret('moco_ldap_dn'),
             'moco_ldap_pass' => secret('moco_ldap_pass'),
             'users_in_groups' => {
-                'ldap_admin_users' => [
+                'ldap_infra_users' => [
                     'netops', 'team_dcops', 'team_opsec', 'team_moc', 'team_infra', 'team_storage'],
             },
         }
     }
 
-    $admin_users = [
-        # TODO: use unique(concat(..)) to concatenate the SM admins with a list of infra people
-        "dmitchell",
-        "ewong",
-        "jwood",
-        "kairo",
-        "jdow",
-    ]
+    $admin_users = unique(concat([
+            "dmitchell",
+            "ewong",
+            "jwood",
+            "kairo",
+        ],
+        hiera('ldap_infra_users',
+            # backup to ensure access in case the sync fails:
+            ['jwood', 'ewong', 'dmitchell'])))
+
     $master_json = "https://hg.mozilla.org/users/Callek_gmail.com/tools/raw-file/default/buildfarm/maintenance/sea-production-masters.json"
     $buildbot_tools_hg_repo = "https://hg.mozilla.org/users/Callek_gmail.com/tools/"
     $buildbot_configs_hg_repo = "https://hg.mozilla.org/build/buildbot-configs"
