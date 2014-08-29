@@ -15,10 +15,6 @@ node "qa-deploystudio1.qa.scl3.mozilla.com" {
 
 ### Servers ###
 
-node "db1.qa.scl3.mozilla.com" {
-    include toplevel::server
-}
-
 node "puppetmaster1.qa.scl3.mozilla.com" {
     include toplevel::server::puppetmaster
 }
