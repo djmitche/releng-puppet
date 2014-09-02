@@ -5,7 +5,7 @@
 
 <%-
   if @exceptions
-    exc_str = @exceptions.join(',')
+    exc_str = @exceptions.map{|ex| ex.sub(/^\.(.*)/, '*.\1')}.join(', ')
   state = @host != "" ? "on" : "off"
 -%>
 
