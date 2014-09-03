@@ -5,11 +5,6 @@
 
 set -e
 
-if ! test -f py27_mercurial.spec; then
-    echo "Run this from the root of the unpacked SRPM (it uses the sources)"
-    exit 1
-fi
-
 export PATH=`xcode-select -print-path`:/tools/packagemaker/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # variables to parallel the spec file
@@ -18,11 +13,30 @@ pyrealname=python27
 pyver=2.7
 pyhome=/tools/$pyrealname
 python_sitelib=$pyhome/lib/python$pyver/site-packages
-_prefix=/tools/${pyrealname}_${realname}
+_prefix=/tools/${pyrealname}-${realname}
 _libdir=$_prefix/lib
 package_sitelib=$_libdir/python$pyver/site-packages
 version=2.5.4
-release=2
+release=3
+srpm_release=1  # use whatever version of the SRPM is on the server
+xcode_vers=4.1
+osx_vers=10.7.2
+
+# ensure the same build environment (you can change this if necessary, just test carefully)
+if [ ! -x /tools/packagemaker/bin/packagemaker ]; then
+    echo "install the packagemaker package (also in puppetagain)"
+    exit 1 
+fi
+
+if [ "$(sw_vers -productVersion)" != "$osx_vers" ]; then
+    echo "Build this on a $osx_vers host"
+    exit 1 
+fi
+
+if [ "$(xcodebuild -version | grep Xcode)" != "Xcode $xcode_vers" ]; then
+    echo "Build this with Xcode $xcode_vers"
+    exit 1 
+fi
 
 # set up a clean build dir
 if test -d build; then
@@ -32,8 +46,11 @@ mkdir build
 BUILD=$PWD/build
 cd $BUILD
 
+# get the sources from the SRPM
+curl http://puppetagain.pub.build.mozilla.org/data/repos/yum/releng/public/CentOS/6/x86_64/mozilla-python27-mercurial-$version-$srpm_release.el6.src.rpm | bsdtar -x
+
 # %prep
-tar -zxf ../$realname-$version.tar.gz
+tar -zxf $realname-$version.tar.gz
 cd $realname-$version
 
 PYTHON=/tools/$pyrealname/bin/python$pyver
@@ -55,7 +72,7 @@ echo $package_sitelib > $ROOT/$python_sitelib/$realname.pth
 mkdir -p $ROOT/usr/local/bin
 ln -s $_prefix/bin/hg $ROOT/usr/local/bin/hg
 
-# build the package (no RPM equivalent, sorry)
+# build the package
 cd $BUILD
 mkdir dmg
 fullname=$pyrealname-$realname-$version-$release
