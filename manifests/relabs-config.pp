@@ -19,7 +19,7 @@ class config inherits config::base {
     $apt_repo_server = $data_server
 
     $distinguished_puppetmaster = "relabs-puppet2.relabs.releng.scl3.mozilla.com"
-    $puppet_again_repo = "https://hg.mozilla.org/build/puppet/"
+    $puppet_again_repo = "https://hg.mozilla.org/build/relabs-puppet/"
 
     $puppet_server_reports = "http"
     $puppet_server_reporturl = "http://foreman.pvt.build.mozilla.org:3001/"
