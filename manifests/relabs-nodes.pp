@@ -13,9 +13,11 @@ node "hp1.relabs.releng.scl3.mozilla.com" {
 }
 
 node "hp2.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "hp3.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "hp4.relabs.releng.scl3.mozilla.com" {
@@ -23,49 +25,61 @@ node "hp4.relabs.releng.scl3.mozilla.com" {
 }
 
 node "hp5.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "hp6.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "hp7.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix-mn-1.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix-mn-2.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix-mn-3.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix-mn-4.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix-mn-5.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix-mn-6.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix1204-1.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix1204-2.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix1204-3.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix1204-4.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
 }
 
 node "ix1204-5.relabs.releng.scl3.mozilla.com" {
-    include toplevel::server
+    include toplevel::base
 }
 
 node "ix1204-9.relabs.releng.scl3.mozilla.com" {
-    # temporary syslog host for bug 1066145
-    include toplevel::server
+    include toplevel::base
 }
