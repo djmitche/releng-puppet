@@ -24,7 +24,8 @@ class config inherits config::base {
     $puppet_server_reports = "http"
     $puppet_server_reporturl = "http://foreman.pvt.build.mozilla.org:3001/"
     $puppet_server_facturl = "http://foreman.pvt.build.mozilla.org:3000/"
-    $puppetmaster_upstream_rsync_source = 'rsync://puppetagain.pub.build.mozilla.org/data/'
+    ## disabled temporarily for bug 1065184
+    #$puppetmaster_upstream_rsync_source = 'rsync://puppetagain.pub.build.mozilla.org/data/'
     $puppetmaster_public_mirror_hosts = [ ]
     $puppetmaster_extsyncs = {
         'slavealloc' => {
