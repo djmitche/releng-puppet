@@ -65,11 +65,14 @@ class packages::setup {
 
                 "openssl":
                     url_path => "repos/yum/custom/openssl/$architecture";
+
+                "bash":
+                    url_path => "repos/yum/custom/bash/$architecture";
             }
 
             # to flush the metadata cache, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 18
+            $repoflag = 22
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -104,7 +107,7 @@ class packages::setup {
             }
             # to flush the package index, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 15
+            $repoflag = 16
             file {
                 "/etc/.repo-flag":
                     content =>
