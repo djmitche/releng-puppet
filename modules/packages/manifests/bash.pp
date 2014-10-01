@@ -5,12 +5,12 @@
 class packages::bash {
     case $::operatingsystem {
         CentOS: {
-            case $::operatingsystemrelease {
-                6.5: {
+            case $::operatingsystemmajrelease {
+                6: {
                     realize(Packages::Yumrepo['bash'])
                     package {
                         "bash":
-                            ensure => "4.1.2-15.el6_5.1";
+                            ensure => "4.1.2-15.el6_5.2";
                     }
                 }
                 default: {
@@ -18,6 +18,35 @@ class packages::bash {
                 }
             }
         }
+        Darwin: {
+            packages::pkgdmg {
+                bash:
+                    os_version_specific => false,
+                    version => "3.2-moz2";
+            }
+        }
+
+        Ubuntu: {
+            realize(Packages::Aptrepo['bash'])
+            case $::operatingsystemrelease {
+                12.04: {
+                    package {
+                        "bash":
+                            ensure => '4.2-2ubuntu2.5';
+                    }
+                }
+                14.04: {
+                    package {
+                        "bash":
+                            ensure => '4.3-7ubuntu1.4';
+                    }
+                }
+                default: {
+                    fail("Unrecognized Ubuntu version $::operatingsystemrelease")
+                }
+            }
+        }
+
         default: {
             fail("cannot install on $::operatingsystem")
         }
