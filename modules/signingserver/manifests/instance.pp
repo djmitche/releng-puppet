@@ -9,7 +9,8 @@ define signingserver::instance(
         $mar_key_name, $jar_key_name,
         $b2g_key0, $b2g_key1, $b2g_key2,
         $formats, $mac_cert_subject_ou,
-        $signcode_timestamp="yes") {
+        $signcode_timestamp="yes",
+        $concurrency=4) {
     include config
     include signingserver::base
     include users::signer
@@ -49,6 +50,7 @@ define signingserver::instance(
     $signmar = "/tools/signmar/bin/signmar"
     $testfile_dir = "/tools/signing-test-files"
     $testfile_signcode = "${testfile_dir}/test.exe"
+    $testfile_osslsigncode = "${testfile_dir}/test64.exe"
     $testfile_mar = "${testfile_dir}/test.mar"
     $testfile_gpg = "${testfile_dir}/test.mar"
     $testfile_dmg = "${testfile_dir}/test.tar.gz"

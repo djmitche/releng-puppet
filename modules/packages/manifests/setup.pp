@@ -56,11 +56,27 @@ class packages::setup {
 
                 "hp-proliantsupportpack":
                     url_path => "repos/yum/mirrors/hp/proliantsupportpack/CentOS/$majorver/$architecture/current";
+
+                "mig-agent":
+                    url_path => "repos/yum/custom/mig-agent/$architecture";
+
+                "git-remote-hg":
+                    url_path => "repos/yum/custom/git-remote-hg/$architecture";
+
+                "openssl":
+                    url_path => "repos/yum/custom/openssl/$architecture";
+
+                "bash":
+                    url_path => "repos/yum/custom/bash/$architecture";
+
+                "osslsigncode":
+                    url_path => "repos/yum/custom/osslsigncode/$architecture";
+
             }
 
             # to flush the metadata cache, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 16
+            $repoflag = 24
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -95,7 +111,7 @@ class packages::setup {
             }
             # to flush the package index, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 14
+            $repoflag = 18
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -148,6 +164,22 @@ class packages::setup {
                     url_path     => "repos/apt/xorg-edgers",
                     distribution => "${lsbdistcodename}",
                     components   => ["main"];
+                "nginx-development":
+                    url_path     => "repos/apt/nginx-development",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["main"];
+                "mig-agent":
+                    url_path     => "repos/apt/custom/mig-agent",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["all"];
+                "openssl":
+                    url_path     => "repos/apt/custom/openssl",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["all"];
+                "bash":
+                    url_path     => "repos/apt/custom/bash",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["all"];
             }
         }
         Darwin: {
