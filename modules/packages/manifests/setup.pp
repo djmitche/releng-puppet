@@ -68,11 +68,15 @@ class packages::setup {
 
                 "bash":
                     url_path => "repos/yum/custom/bash/$architecture";
+
+                "osslsigncode":
+                    url_path => "repos/yum/custom/osslsigncode/$architecture";
+
             }
 
             # to flush the metadata cache, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 23
+            $repoflag = 24
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -158,6 +162,10 @@ class packages::setup {
             @packages::aptrepo {
                 "xorg-edgers":
                     url_path     => "repos/apt/xorg-edgers",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["main"];
+                "nginx-development":
+                    url_path     => "repos/apt/nginx-development",
                     distribution => "${lsbdistcodename}",
                     components   => ["main"];
                 "mig-agent":
