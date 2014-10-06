@@ -136,14 +136,8 @@ node /network-node\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
 
 ## Misc servers
 
-node "proxxy1.srv.releng.scl3.mozilla.com" {
-    include toplevel::server
-    users::root::extra_authorized_key {
-        'gmiroshnykov': ;
-    }
-}
-
 # aws-manager
+
 node "aws-manager1.srv.releng.scl3.mozilla.com" {
     include toplevel::server::aws_manager
 }
@@ -179,6 +173,15 @@ node /mobile-imaging-\d+\.p\d+\.releng\.scl3\.mozilla\.com/ {
     include toplevel::server::mozpool
     users::root::extra_authorized_key {
         'mcote': ;
+    }
+}
+
+# Proxxy
+
+node /proxxy\d+\.srv\.releng\.(scl3|use1|usw2)\.mozilla\.com/ {
+    include toplevel::server::proxxy
+    users::root::extra_authorized_key {
+        'gmiroshnykov': ;
     }
 }
 
