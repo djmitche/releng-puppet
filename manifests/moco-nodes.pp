@@ -137,6 +137,7 @@ node /network-node\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
 ## Misc servers
 
 # aws-manager
+
 node "aws-manager1.srv.releng.scl3.mozilla.com" {
     include toplevel::server::aws_manager
 }
@@ -172,6 +173,15 @@ node /mobile-imaging-\d+\.p\d+\.releng\.scl3\.mozilla\.com/ {
     include toplevel::server::mozpool
     users::root::extra_authorized_key {
         'mcote': ;
+    }
+}
+
+# Proxxy
+
+node /proxxy\d+\.srv\.releng\.(scl3|use1|usw2)\.mozilla\.com/ {
+    include toplevel::server::proxxy
+    users::root::extra_authorized_key {
+        'gmiroshnykov': ;
     }
 }
 
@@ -459,6 +469,7 @@ node "buildbot-master81.srv.releng.scl3.mozilla.com" {
     include toplevel::server::buildmaster::mozilla
     include toplevel::mixin::selfserve_agent
     include toplevel::mixin::releaserunner
+    include toplevel::mixin::shipit_notifier
     include toplevel::mixin::buildmaster_db_maintenance
     include toplevel::mixin::bouncer_check
 }
@@ -524,16 +535,6 @@ node "buildbot-master87.srv.releng.scl3.mozilla.com" {
     include toplevel::server::buildmaster::mozilla
 }
 
-node "buildbot-master88.srv.releng.scl3.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm88-tests1-tegra":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-tegra";
-    }
-    include toplevel::server::buildmaster::mozilla
-}
-
 node "buildbot-master89.srv.releng.scl3.mozilla.com" {
     buildmaster::buildbot_master::mozilla {
         "bm89-tests1-panda":
@@ -561,16 +562,6 @@ node "buildbot-master94.srv.releng.use1.mozilla.com" {
             http_port => 8001,
             master_type => "build",
             basedir => "build1";
-    }
-    include toplevel::server::buildmaster::mozilla
-}
-
-node "buildbot-master99.srv.releng.scl3.mozilla.com" {
-    buildmaster::buildbot_master::mozilla {
-        "bm99-tests1-tegra":
-            http_port => 8201,
-            master_type => "tests",
-            basedir => "tests1-tegra";
     }
     include toplevel::server::buildmaster::mozilla
 }

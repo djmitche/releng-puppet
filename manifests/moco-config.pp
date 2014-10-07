@@ -14,6 +14,7 @@ class config inherits config::base {
     $install_google_api_key = true
     $install_ceph_cfg = true
     $install_mozilla_api_key = true
+    $install_google_oauth_api_key = true
 
     # we use the sort_servers_by_group function to sort the list of servers, and then just use
     # the first as the primary server
@@ -74,6 +75,8 @@ class config inherits config::base {
     $ntp_server = "time.mozilla.org"
     $relayhost = "[smtp.mozilla.org]"
 
+    $enable_mig_agent = true
+
     $signer_username = 'cltsign'
     $signing_tools_repo = 'https://hg.mozilla.org/build/tools'
     $signing_mac_id = 'Mozilla'
@@ -120,6 +123,9 @@ class config inherits config::base {
 
         # used on buildbot masters
         'release-runner' => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMCfdvoKtT4IU0cw6ckj748zxlr7wMxJfyRadUfpI+ZE6jOAjBrAxptVImaFYeVD9PFe5DXyAhRlhUPHSbtq+unMhkZrERYmUhxZ82TSqMSLDwMiacM0umXDnVqcs6cji5gjjE69TeLf9RywOzAmpU/JAasMDa7q4aNsccG7kj59vBl4yyZdx63yNNuxzBtvQd3LNjz2Ux3I60JZDM/xUu8eMBP9PDP5FIi4zILS8sKFzVD9l/7xsyLYv+IpFS1jLvX/eo0gKxM+27rlyyWET2mu/Vjw2J8gN6G9zh4nlMgEeeqFnR3ykFBgEl+LqM4PoH8xVzwZ1iZ8tDgP40nA3Z release-runner key'],
+
+        # Contractor - see bug 1056306
+        'gmiroshnykov' => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMD5DWPoEPG8UuXLsm1bNTz2gUz7rxPO/GuvcRjoNLPbNDqmygMlRbjm9BV8/IFAHvPCidLYkCTwDT20jvYcxf7RZMp3qw9mODpqvYZPAvW1hvv0NHbie5S2FCDFzt//QRvIdn0nEmITe9J4gdaROC/mUpwetJFsjpvh6wHsyF+T6X1HC1uXwlQ87p5a0eZ5gH055k5gggqqgYfGVipAT58OrKIE94G7Ow7avRK9VW01xpahig8giC0zL1SzeSWemmItkTGmXkda4jXhDPqJ/GrKOqDyI+UgYMsEiJw+aQmBvOptO+HOd0wgPVTGaDWX9MhCLsbADRnLqIyp6pMo6f'],
     }
 
     # a few users from each team as the "short list" of people with access
@@ -134,6 +140,7 @@ class config inherits config::base {
         'catlee',
         'coop',
         'nthomas',
+        'pmoore',
         'raliiev',
     ]
     $admin_users = $fqdn ? {
@@ -157,6 +164,9 @@ class config inherits config::base {
     $releaserunner_production_masters = "https://hg.mozilla.org/build/tools/raw-file/default/buildfarm/maintenance/production-masters.json"
     $releaserunner_sendchange_master = "buildbot-master81.build.mozilla.org:9301"
     $releaserunner_ssh_username = "cltbld"
+
+    $shipit_notifier_api_root = "http://ship-it.mozilla.org"
+    $shipit_notifier_verbose = true
 
     $slaveapi_slavealloc_url = "http://slavealloc.build.mozilla.org/api/"
     $slaveapi_inventory_url = "https://inventory.mozilla.org/en-US/tasty/v3/"

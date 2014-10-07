@@ -60,6 +60,10 @@ class config::base {
     # the hostname of a centralized syslog server puppetmasters should forward to
     $puppetmaster_syslog_server = ""
 
+    # the hostname (or some more complicated formula generating the hostname)
+    # of the host to which all log data should be directed
+    $log_aggregator = ""
+
     ##
     ## packages and data
     ##
@@ -133,6 +137,9 @@ class config::base {
     # content to be placed in authorized_keys (so, "<type> <key> <comment>")
     $extra_user_ssh_keys = {}
 
+    # a flag the controls which nodes should install and run MIG Agent
+    $enable_mig_agent = false
+
     ##
     ## users
     ##
@@ -164,6 +171,8 @@ class config::base {
     $install_ceph_cfg = false
     # true if secret("mozilla_api_key") should be installed at /builds/mozilla-api.key
     $install_mozilla_api_key = false
+    # true if secret("google_oauth_api_key") should be installed at /builds/google-oauth-api.key
+    $install_google_oauth_api_key = false
 
     # signingserver
 
@@ -227,6 +236,18 @@ class config::base {
     $releaserunner_tools_branch = "default"
     # root directory for releaserunner; this must be under /builds
     $releaserunner_root = "/builds/releaserunner"
+
+    # shipit_notifier
+
+    # shipit api root
+    $shipit_notifier_api_root = "https://ship-it.mozilla.org"
+    # shipit notifier verbosity level
+    $shipit_notifier_verbose = true
+    # mercurial repository and branch for tools
+    $shipit_notifier_tools = "https://hg.mozilla.org/build/tools"
+    $shipit_notifier_tools_branch = "default"
+    # root directory for shipit_notifier; this must be under /builds
+    $shipit_notifier_root = "/builds/shipit_notifier"
 
     # selfserve (buildapi agent)
 
