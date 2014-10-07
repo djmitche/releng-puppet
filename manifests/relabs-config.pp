@@ -64,6 +64,7 @@ class config inherits config::base {
 
     $log_aggregator = 'hp1.relabs.releng.scl3.mozilla.com'
 
+    default => hiera('ldap_admin_users',
     $admin_users = [
         "arr",
         "bhearsum",
@@ -79,5 +80,16 @@ class config inherits config::base {
         "jvehent",
         "gmiroshnykov",
     ]
+    $admin_users = unique(concat([
+        "arr",
+        "dmitchell",
+        "jwatkins",
+        "dmaher",
+        "hskupin",
+        "pchiasson",
+        "jvehent",
+        "gmiroshnykov",
+    ],
+    hiera('ldap_admin_users', ['arr', 'dmitchell', 'jwatkins'])))
 }
 
