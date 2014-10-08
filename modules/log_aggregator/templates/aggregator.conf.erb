@@ -7,8 +7,8 @@
 
 $RuleSet aggregation
 
-# log to an output file with rotation
-$outchannel aggregate,/opt/aggregator/log/aggregate.log,52428800,/opt/aggregator/bin/rotate
+# log to an output file with rotation (50GB)
+$outchannel aggregate,/opt/aggregator/log/aggregate.log,53687091200,/opt/aggregator/bin/rotate
 *.* :omfile:$aggregate
 
 # set the ruleset back for subsequent rules
