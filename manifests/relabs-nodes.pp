@@ -80,6 +80,18 @@ node "ix1204-5.relabs.releng.scl3.mozilla.com" {
     include toplevel::base
 }
 
+node "ix1204-6.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
+}
+
+node "ix1204-7.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
+}
+
+node "ix1204-8.relabs.releng.scl3.mozilla.com" {
+    include toplevel::base
+}
+
 node "ix1204-9.relabs.releng.scl3.mozilla.com" {
     include toplevel::base
 }
