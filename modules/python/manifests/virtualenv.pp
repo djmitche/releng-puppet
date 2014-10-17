@@ -8,34 +8,46 @@ define python::virtualenv($python, $ensure="present", $packages=null, $user=null
     include python::virtualenv::prerequisites
 
     $virtualenv = $title
+    $ve_cmd = $operatingsystem ? {
+        windows => "$python -BE ${python::virtualenv::settings::misc_python_dir}\\virtualenv.py --python=$python --distribute --never-download $virtualenv",
+        default => "$python -BE ${python::virtualenv::settings::misc_python_dir}/virtualenv.py \
+                                        --python=$python --distribute --never-download $virtualenv",
+    }
 
     # Figure out user/group if they haven't been set
-    case $user {
-        null: {
-            $ve_user = "root"
-        }
-
-        default: {
-            $ve_user = $user
-        }
-    }
-    case $group {
-        null: {
-            case $::kernel {
-                Linux: {
-                    $ve_group = "root"
+    # User and Group attributes are not support by Windows when using the exec resource
+    case $::operatingsystem {
+        Windows: {  
+            $ve_user = undef
+            $ve_group = undef
+        } 
+        default: {   
+            case $user {
+                null: {
+                    $ve_user = "root"
                 }
-                Darwin: {
-                    $ve_group = "admin"
+                default: {
+                    $ve_user = $user
+                }
+            }
+            case $group {
+                null: {
+                    case $::kernel {
+                        Linux: {
+                            $ve_group = "root"
+                        }
+                        Darwin: {
+                            $ve_group = "admin"
+                        }
+                    }
+                }
+
+                default: {
+                          $ve_group = $group
                 }
             }
         }
-
-        default: {
-            $ve_group = $group
-        }
     }
-
     case $ensure {
         present: {
             file {
@@ -49,19 +61,19 @@ define python::virtualenv($python, $ensure="present", $packages=null, $user=null
                 "$virtualenv||pip==${python::virtualenv::settings::pip_version}":
                     user => $ve_user;
             }
-            exec {
-                "virtualenv $virtualenv":
-                    name => "$python -BE ${python::virtualenv::settings::misc_python_dir}/virtualenv.py \
-                            --python=$python --distribute --never-download $virtualenv",
-                    user => $ve_user,
-                    logoutput => on_failure,
-                    require => [
-                        File[$virtualenv],
-                        Class['python::virtualenv::prerequisites'],
-                    ],
-                    creates => "$virtualenv/bin/pip",
-                    cwd => $virtualenv;
-            }
+                    exec {
+                        "virtualenv $virtualenv":
+                            user => $ve_user,
+                            command => $ve_cmd,
+                            logoutput => on_failure,
+                            require => [
+                                File[$virtualenv],
+                                    Class['python::virtualenv::prerequisites'],
+                            ],
+                            creates => "$virtualenv/bin/pip",
+                            cwd => $virtualenv;
+                    }
+          
             if ($packages != null) {
                 # now install each package; we use regsubst to qualify the resource
                 # name with the virtualenv; a similar regsubst will be used in the

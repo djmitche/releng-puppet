@@ -26,7 +26,6 @@ servers = [ @data_server ] + Array(@data_servers)
 servers.uniq.each do |mirror_server| -%> --find-links=http://<%= mirror_server %>/python/packages <%
 end
 -%>")
-
     if ($user == 'root') {
         $home_dir = $::users::root::home
     } else {
@@ -35,7 +34,6 @@ end
             default => "/home/$user"
         }
     }
-
     exec {
         # point pip at the package directory so that it can select the best option
         "pip $title":
