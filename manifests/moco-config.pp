@@ -195,7 +195,7 @@ class config inherits config::base {
     $slaverebooter_slaveapi = "http://slaveapi1.srv.releng.scl3.mozilla.com:8080"
     $slaverebooter_mail_to = "release@mozilla.com"
 
-    $buildmaster_ssh_keys = [ 'b2gbld_dsa', 'b2gtry_dsa', 'ffxbld_dsa', 'tbirdbld_dsa', 'trybld_dsa', 'xrbld_dsa' ]
+    $buildmaster_ssh_keys = [ 'b2gbld_dsa', 'b2gtry_dsa', 'ffxbld_rsa', 'ffxbld_dsa', 'tbirdbld_dsa', 'trybld_dsa', 'xrbld_dsa' ]
 
     $collectd_write = {
         graphite_nodes => {
@@ -231,13 +231,12 @@ class config inherits config::base {
     $log_aggregator = $fqdn ? {
         'aws-manager1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'dev-master1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-signing1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-signing2.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-signing3.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-signing4.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-v2-signing1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-v2-signing2.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-v2-signing3.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
+        'mac-v2-signing4.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'proxxy1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'signing4.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'signing5.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
@@ -293,6 +292,7 @@ class config inherits config::base {
         10.7 => "4.1",
         10.8 => "4.5-cmdline",
         10.9 => "5.0-cmdline",
+        10.10 => "6.1-cmdline",
         default => undef
     }
 }
