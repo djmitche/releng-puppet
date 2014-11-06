@@ -51,15 +51,12 @@ class config inherits config::base {
     $vmwaretools_version = "9.4.0-1280544"
     $vmwaretools_md5 = "4a2d230828919048c0c3ae8420f8edfe"
 
-    $admin_users = unique(concat([
-            # Admins of the QA org
-            'andrei.eftimie',  # previously aeftimie
-            'andreea.matei',  # previously amatei
-            'cosmin.malutan',  # previously cmalutan
-            'ctalbert',
-            'hskupin'
-        ],
+    $admin_users = unique(
+        hiera('vpn_qa_scl3',
+            # backup to ensure access in case the sync fails:
+            ['hskupin', 'mschifer']),
         hiera('ldap_infra_users',
             # backup to ensure access in case the sync fails:
-            ['arr', 'dmitchell', 'jwatkins'])))
+            ['arr', 'dmitchell', 'jwatkins'])
+    )
 }
