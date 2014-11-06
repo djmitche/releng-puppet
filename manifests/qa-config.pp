@@ -37,6 +37,7 @@ class config inherits config::base {
     }
 
     $ntp_server = "ns1.private.scl3.mozilla.com"
+    $relayhost = "[smtp.mozilla.org]"
     $enable_mig_agent = true
 
     $web_proxy_host = "proxy.dmz.scl3.mozilla.com"
@@ -56,7 +57,6 @@ class config inherits config::base {
             'andreea.matei',  # previously amatei
             'cosmin.malutan',  # previously cmalutan
             'ctalbert',
-            'daniel.gherasim',  # previously dgherasim
             'hskupin'
         ],
         hiera('ldap_infra_users',
