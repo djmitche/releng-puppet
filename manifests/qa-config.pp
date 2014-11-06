@@ -30,8 +30,8 @@ class config inherits config::base {
             'moco_ldap_dn' => secret('moco_ldap_dn'),
             'moco_ldap_pass' => secret('moco_ldap_pass'),
             'users_in_groups' => {
-                'ldap_infra_users' => ['relops',
-                    'netops', 'team_dcops', 'team_opsec', 'team_moc', 'team_infra', 'team_storage'],
+                'ldap_infra_users' => [
+                    'relops', 'netops', 'team_dcops', 'team_opsec', 'team_moc', 'team_infra', 'team_storage'],
             },
         }
     }
@@ -51,12 +51,12 @@ class config inherits config::base {
     $vmwaretools_version = "9.4.0-1280544"
     $vmwaretools_md5 = "4a2d230828919048c0c3ae8420f8edfe"
 
-    $admin_users = unique(
+    $admin_users = unique(concat(
         hiera('vpn_qa_scl3',
             # backup to ensure access in case the sync fails:
             ['hskupin', 'mschifer']),
         hiera('ldap_infra_users',
             # backup to ensure access in case the sync fails:
-            ['arr', 'dmitchell', 'jwatkins'])
+            ['arr', 'dmitchell', 'jwatkins']))
     )
 }
