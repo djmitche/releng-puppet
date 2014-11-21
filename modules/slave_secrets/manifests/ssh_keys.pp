@@ -12,7 +12,7 @@ class slave_secrets::ssh_keys($slave_type) {
             $staging_keyset = {
                 'trybld_dsa' => 'builder_ssh_key_staging_trybld_dsa',
                 'b2gtry_dsa' => 'builder_ssh_key_staging_b2gbld_dsa',
-                'ffxbld_dsa' => 'builder_ssh_key_staging_ffxbld_dsa',
+                'ffxbld_rsa' => 'builder_ssh_key_staging_ffxbld_rsa',
                 'xrbld_dsa' => 'builder_ssh_key_staging_xrbld_dsa',
                 'tbirdbld_dsa' => 'builder_ssh_key_staging_tbirdbld_dsa',
                 'b2gbld_dsa' => 'builder_ssh_key_staging_b2gbld_dsa',
@@ -23,6 +23,7 @@ class slave_secrets::ssh_keys($slave_type) {
             }
             $prod_core_keyset = {
                 'ffxbld_dsa' => 'builder_ssh_key_prod_ffxbld_dsa',
+                'ffxbld_rsa' => 'builder_ssh_key_prod_ffxbld_rsa',
                 'xrbld_dsa' => 'builder_ssh_key_prod_xrbld_dsa',
                 'tbirdbld_dsa' => 'builder_ssh_key_prod_tbirdbld_dsa',
                 'b2gbld_dsa' => 'builder_ssh_key_prod_b2gbld_dsa',
@@ -103,9 +104,6 @@ class slave_secrets::ssh_keys($slave_type) {
             $keyset = {
                 'testy' => 'builder_ssh_key_prod_testy',
             }
-        }
-        servo: {
-            $keyset = {}
         }
         default: {
             fail("no slave_secrets::ssh_key configuration for ${config::org}")
