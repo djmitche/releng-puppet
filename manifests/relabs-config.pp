@@ -43,6 +43,14 @@ class config inherits config::base {
         }
     }
 
+    $collectd_write = {
+        graphite_nodes => {
+            'graphite-relay.private.scl3.mozilla.com' => {
+                'port' => '2003', 'prefix' => 'hosts.',
+            },
+        },
+    }
+
     $signer_username = 'relabssign'
     $signing_tools_repo = 'https://hg.mozilla.org/build/tools'
     $signing_redis_host = 'localhost'

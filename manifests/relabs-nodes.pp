@@ -4,6 +4,12 @@
 
 ## relabs machines - check with dustin to borrow one
 
+# temp for 1096734
+node /b-2008-\w+-\d+.winbuild.releng.scl3.mozilla.com/ {
+    $slave_trustlevel = 'try'
+    include toplevel::slave::releng
+}
+
 node "relabs-puppet2.relabs.releng.scl3.mozilla.com" {
     include toplevel::server::puppetmaster
 }
