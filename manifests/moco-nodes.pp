@@ -59,6 +59,11 @@ node /bld-lion-r5-\d+\.build\.releng\.scl3\.mozilla\.com/ {
 ## try builders
 
 #linux64
+node /b-2008-\w+-\d+.winbuild.releng.scl3.mozilla.com/ {
+    $slave_trustlevel = 'try'
+    include toplevel::slave::releng
+}
+
 node /b-linux64-\w+-\d+.try.releng.scl3.mozilla.com/ {
     # any b-linux64-(something)-digit host in the scl3 try zone
     $slave_trustlevel = 'try'
@@ -136,6 +141,18 @@ node /network-node\d+\.admin\.cloud\.releng\.scl3\.mozilla\.com/ {
 
 ## Misc servers
 
+node /dev-linux64-ec2-001.dev.releng.use1.mozilla.com/ {
+    # any dev or try node in the dev or try zones of use1 and usw2
+    # dev-* hosts are *always* staging
+    $slave_trustlevel = 'try'
+    include toplevel::slave::releng::build::mock
+    include diamond
+    include instance_metadata::diamond
+    users::root::extra_authorized_key {
+        'sledru': ;
+    }
+}
+
 # aws-manager
 
 node "aws-manager1.srv.releng.scl3.mozilla.com" {
@@ -203,11 +220,14 @@ node "dev-master1.srv.releng.scl3.mozilla.com" {
     include toplevel::server::buildmaster::mozilla
     # Bug 975004 - Grant pkewisch access to dev-master1
     realize(Users::Person["pkewisch"])
+    realize(Users::Person["sledru"])
     users::root::extra_authorized_key {
         'pkewisch': ;
+        'sledru': ;
     }
     users::builder::extra_authorized_key {
         'pkewisch': ;
+        'sledru': ;
     }
 }
 
@@ -752,6 +772,16 @@ node "buildbot-master118.bb.releng.usw2.mozilla.com" {
             http_port => 8201,
             master_type => "tests",
             basedir => "tests1-linux64";
+    }
+    include toplevel::server::buildmaster::mozilla
+}
+
+node "buildbot-master119.bb.releng.scl3.mozilla.com" {
+    buildmaster::buildbot_master::mozilla {
+        "bm119-tests1-windows":
+            http_port => 8201,
+            master_type => "tests",
+            basedir => "tests1-windows";
     }
     include toplevel::server::buildmaster::mozilla
 }

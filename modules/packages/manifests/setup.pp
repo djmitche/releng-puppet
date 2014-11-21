@@ -72,11 +72,16 @@ class packages::setup {
                 "osslsigncode":
                     url_path => "repos/yum/custom/osslsigncode/$architecture";
 
+                "auditd":
+                    url_path => "repos/yum/custom/auditd/$architecture";
+
+                "openipmi":
+                    url_path => "repos/yum/custom/openipmi/$architecture";
             }
 
             # to flush the metadata cache, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 24
+            $repoflag = 25
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -111,7 +116,7 @@ class packages::setup {
             }
             # to flush the package index, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 18
+            $repoflag = 19
             file {
                 "/etc/.repo-flag":
                     content =>

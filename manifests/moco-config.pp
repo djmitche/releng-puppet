@@ -19,17 +19,9 @@ class config inherits config::base {
     # we use the sort_servers_by_group function to sort the list of servers, and then just use
     # the first as the primary server
     $grouped_puppet_servers = {
-        ".*\\.releng\\.scl3\\.mozilla\\.com" => [
+        ".*" => [
            "releng-puppet1.srv.releng.scl3.mozilla.com",
            "releng-puppet2.srv.releng.scl3.mozilla.com",
-        ],
-        ".*\\.releng\\.(use1|aws-us-east-1)\\.mozilla\\.com" => [
-            "releng-puppet1.srv.releng.use1.mozilla.com",
-            "releng-puppet2.srv.releng.use1.mozilla.com",
-        ],
-        ".*\\.releng\\.(usw2|aws-us-west-2)\\.mozilla\\.com" => [
-            "releng-puppet1.srv.releng.usw2.mozilla.com",
-            "releng-puppet2.srv.releng.usw2.mozilla.com",
         ],
     }
     $puppet_servers = sort_servers_by_group($grouped_puppet_servers)
@@ -64,6 +56,7 @@ class config inherits config::base {
             'users_in_groups' => {
                 'ldap_admin_users' => ['releng', 'relops',
                     'netops', 'team_dcops', 'team_opsec', 'team_moc', 'team_infra', 'team_storage'],
+                'opsec' => ['team_opsec'],
             },
         }
     }
@@ -139,13 +132,14 @@ class config inherits config::base {
         'bhearsum',
         'catlee',
         'coop',
+        'jwood',
         'nthomas',
         'pmoore',
         'raliiev',
     ]
     $admin_users = $fqdn ? {
         # signing machines have a very limited access list
-        /^(mac-)?(v2-)?signing\d\..*/ => $shortlist,
+        /^(mac-)?(v2-)?signing\d\..*/ => concat($shortlist, hiera('opsec')),
         default => hiera('ldap_admin_users',
                          # backup to ensure access in case the sync fails:
                          ['arr', 'dmitchell', 'jwatkins'])
@@ -181,7 +175,7 @@ class config inherits config::base {
     $selfserve_agent_sendchange_master = "bm81-build_scheduler"
     $selfserve_agent_branches_json = "https://hg.mozilla.org/build/tools/raw-file/default/buildfarm/maintenance/production-branches.json"
     $selfserve_agent_masters_json = "https://hg.mozilla.org/build/tools/raw-file/default/buildfarm/maintenance/production-masters.json"
-    $selfserve_agent_clobberer_url = "http://clobberer.pvt.build.mozilla.org/index.php"
+    $selfserve_agent_clobberer_url = "https://api.pub.build.mozilla.org/clobberer/clobber/by-builder"
     $selfserve_agent_carrot_hostname = "releng-rabbitmq-zlb.webapp.scl3.mozilla.com"
     $selfserve_agent_carrot_vhost = "/buildapi"
     $selfserve_agent_carrot_userid = "buildapi"
@@ -195,7 +189,7 @@ class config inherits config::base {
     $slaverebooter_slaveapi = "http://slaveapi1.srv.releng.scl3.mozilla.com:8080"
     $slaverebooter_mail_to = "release@mozilla.com"
 
-    $buildmaster_ssh_keys = [ 'b2gbld_dsa', 'b2gtry_dsa', 'ffxbld_dsa', 'tbirdbld_dsa', 'trybld_dsa', 'xrbld_dsa' ]
+    $buildmaster_ssh_keys = [ 'b2gbld_dsa', 'b2gtry_dsa', 'ffxbld_rsa', 'ffxbld_dsa', 'tbirdbld_dsa', 'trybld_dsa', 'xrbld_dsa' ]
 
     $collectd_write = {
         graphite_nodes => {
@@ -231,13 +225,12 @@ class config inherits config::base {
     $log_aggregator = $fqdn ? {
         'aws-manager1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'dev-master1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-signing1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-signing2.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-signing3.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-signing4.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-v2-signing1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-v2-signing2.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'mac-v2-signing3.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
+        'mac-v2-signing4.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'proxxy1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'signing4.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
         'signing5.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
@@ -293,6 +286,7 @@ class config inherits config::base {
         10.7 => "4.1",
         10.8 => "4.5-cmdline",
         10.9 => "5.0-cmdline",
+        10.10 => "6.1-cmdline",
         default => undef
     }
 }
