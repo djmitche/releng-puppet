@@ -14,7 +14,7 @@ class runner {
             python   => $packages::mozilla::python27::python,
             require  => Class['packages::mozilla::python27'],
             packages => [
-                'runner==1.1',
+                'runner==1.6',
             ];
     }
 
@@ -27,6 +27,10 @@ class runner {
         "${runner::settings::root}/runner.cfg":
             before  => Service['runner'],
             content => template('runner/runner.cfg.erb');
+        "$runner::settings::task_hook":
+            before  => Service['runner'],
+            mode    => '0755',
+            source  => 'puppet:///modules/runner/influxdb_hook.py';
     }
 
     case $::operatingsystem {

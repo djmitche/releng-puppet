@@ -21,7 +21,17 @@ class toplevel::server inherits toplevel::base {
         case $::operatingsystem {
             # Darwin support is coming soon
             'CentOS', 'RedHat', 'Ubuntu': {
-                include mig::agent
+                include mig::agent::daemon
+            }
+        }
+    }
+
+    # auditd only runs on CentOS at the moment
+    case $::operatingsystem {
+        'CentOS': {
+            class {
+                'auditd':
+                    host_type => 'server';
             }
         }
     }

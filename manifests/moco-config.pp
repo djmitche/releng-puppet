@@ -5,7 +5,7 @@
 class config inherits config::base {
     $org = "moco"
 
-    $puppet_notif_email = "releng-shared@mozilla.com"
+    $puppet_notif_email = "releng-puppet-mail@mozilla.com"
     $puppet_server_reports = "tagmail,http"
     $puppet_server_reporturl = "http://foreman.pvt.build.mozilla.org:3001/"
     $puppet_server_facturl = "http://foreman.pvt.build.mozilla.org:3000/"
@@ -13,7 +13,7 @@ class config inherits config::base {
     $builder_username = "cltbld"
     $install_google_api_key = true
     $install_ceph_cfg = true
-    $install_mozilla_api_key = true
+    $install_mozilla_geoloc_api_keys = true
     $install_google_oauth_api_key = true
 
     # we use the sort_servers_by_group function to sort the list of servers, and then just use
@@ -65,7 +65,7 @@ class config inherits config::base {
     $user_python_repositories = [ "http://pypi.pvt.build.mozilla.org/pub", "http://pypi.pub.build.mozilla.org/pub" ]
 
     $nrpe_allowed_hosts = "127.0.0.1,10.26.75.30"
-    $ntp_server = "time.mozilla.org"
+    $ntp_servers = [ "ns1.private.releng.scl3.mozilla.com", "ns2.private.releng.scl3.mozilla.com" ]
     $relayhost = "[smtp.mozilla.org]"
 
     $enable_mig_agent = true
@@ -116,6 +116,7 @@ class config inherits config::base {
 
         # used on buildbot masters
         'release-runner' => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMCfdvoKtT4IU0cw6ckj748zxlr7wMxJfyRadUfpI+ZE6jOAjBrAxptVImaFYeVD9PFe5DXyAhRlhUPHSbtq+unMhkZrERYmUhxZ82TSqMSLDwMiacM0umXDnVqcs6cji5gjjE69TeLf9RywOzAmpU/JAasMDa7q4aNsccG7kj59vBl4yyZdx63yNNuxzBtvQd3LNjz2Ux3I60JZDM/xUu8eMBP9PDP5FIi4zILS8sKFzVD9l/7xsyLYv+IpFS1jLvX/eo0gKxM+27rlyyWET2mu/Vjw2J8gN6G9zh4nlMgEeeqFnR3ykFBgEl+LqM4PoH8xVzwZ1iZ8tDgP40nA3Z release-runner key'],
+        'aws-ssh-key'  => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDVXLGITkkJL0lLIOqZh1hTZ59JoczFGQnaX6fHFxG0KdnD0qUQOXw5+gte+89vvvwdQybEBtH9+b+FeM4q1cOEfS+E5wJdzCqf3XRWrq9aNWMm3X4g+2aOlyc/O6+G6/WTXzUiBRKj9gDiodDYQFVEO01ytvIDKFuVZTLQTT/jveWArFFWsjvZZwj5RdAZQOoPylaNVzBnnoOxpn4iTowuXJ8QudzW47M9tLHHJWAGfGjejmS/rWKMnDmqHotQpLKUNItTogleFFdSDse2kkaABFYX65V1dbRQRh46hh+u0HDbFqdrTSEoHqRwmm6Varep7XjXi+Hdw3RiIs8LoNS1FKSEHfxDuc58kcPw/daq1n9a9nZK5g9V+4Oyn/ys9GcjZq44UCsjuJd0UI3Siz/I6vcBD9evzDjVHY4q3rdzv2Hdi0cDxBOgOBVWPUiwWsoHHXho2AFL/VyrEq525ib8cUT9jgod007JsgmlqVe/YyBeLSRHmSsAsKRE5tfnWlFJUygnPbkMugiWxxvFdEASKANvx+qxX96Uwr6a9Hi7OKVBKH886hLUP8+l5hVvOWLQW2uT7RRxIfRMg+fRIAROvydr9XiJiViFrSSR0dfeLghsHzzP6D5Voqad7scR9hMXuPMjx5PF9eX3D+XshAOSFzN2stWZFBRl4IxwSj3izQ== aws-ssh-key'],
 
         # Contractor - see bug 1056306
         'gmiroshnykov' => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMD5DWPoEPG8UuXLsm1bNTz2gUz7rxPO/GuvcRjoNLPbNDqmygMlRbjm9BV8/IFAHvPCidLYkCTwDT20jvYcxf7RZMp3qw9mODpqvYZPAvW1hvv0NHbie5S2FCDFzt//QRvIdn0nEmITe9J4gdaROC/mUpwetJFsjpvh6wHsyF+T6X1HC1uXwlQ87p5a0eZ5gH055k5gggqqgYfGVipAT58OrKIE94G7Ow7avRK9VW01xpahig8giC0zL1SzeSWemmItkTGmXkda4jXhDPqJ/GrKOqDyI+UgYMsEiJw+aQmBvOptO+HOd0wgPVTGaDWX9MhCLsbADRnLqIyp6pMo6f'],
@@ -150,7 +151,7 @@ class config inherits config::base {
     $vmwaretools_version = "9.4.0-1280544"
     $vmwaretools_md5 = "4a2d230828919048c0c3ae8420f8edfe"
     $releaserunner_notify_from = "Release Eng <release@mozilla.com>"
-    $releaserunner_notify_to = "Release Drivers <release-drivers@mozilla.org>"
+    $releaserunner_notify_to = "Releng <release@mozilla.com>, Relman <release-mgmt@mozilla.com>"
     $releaserunner_smtp_server = "localhost"
     $releaserunner_hg_host = "hg.mozilla.org"
     $releaserunner_hg_username = "ffxbld"
@@ -220,66 +221,10 @@ class config inherits config::base {
 
     $runner_buildbot_slave_dir = '/builds/slave'
 
-    # set the log aggregator only for some hosts; the idea is to get an idea of
-    # the total log bandwidth without killing anything
-    $log_aggregator = $fqdn ? {
-        'aws-manager1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'dev-master1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-signing2.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-signing3.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-v2-signing1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-v2-signing2.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-v2-signing3.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'mac-v2-signing4.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'proxxy1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'signing4.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'signing5.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'signing6.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'slaveapi-dev1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'slaveapi1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-
-        'releng-puppet1.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'releng-puppet2.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        # +4
-
-        'b-linux64-hp-0018.try.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'b-linux64-hp-0019.try.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'b-linux64-hp-0020.build.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'b-linux64-hp-0021.build.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        # +30
-
-        'b-linux64-ix-0001.build.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'b-linux64-ix-0002.build.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        # +25
-
-        'bld-lion-r5-014.build.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'bld-lion-r5-015.build.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'bld-lion-r5-016.try.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'bld-lion-r5-017.try.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        # +86
-
-        'buildbot-master81.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'buildbot-master82.srv.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        # +64
-
-        # +95 foopies (no flow)
-
-        # +11 mobile imaging servers (no flow)
-
-        't-snow-r4-0026.test.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        't-snow-r4-0027.test.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        # +163
-
-        'talos-linux32-ix-037.test.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'talos-linux32-ix-038.test.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        # +199
-
-        'talos-mtnlion-r5-033.test.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        'talos-mtnlion-r5-034.test.releng.scl3.mozilla.com' => 'hp1.relabs.releng.scl3.mozilla.com',
-        # +97
-
-        default => ''
-    }
+    # deploystudio
+    $deploystudio_username = 'dsadmin'
+    # deploystudio_uid must be an int greater than 500
+    $deploystudio_uid = 543647
 
     $xcode_version = $::macosx_productversion_major ? {
         10.6 => "4.2",

@@ -77,11 +77,17 @@ class packages::setup {
 
                 "openipmi":
                     url_path => "repos/yum/custom/openipmi/$architecture";
+
+                "mock_mozilla":
+                    url_path => "repos/yum/custom/mock_mozilla/$architecture";
+
+                "debian": # misc debian utilities
+                    url_path => "repos/yum/custom/debian/$architecture";
             }
 
             # to flush the metadata cache, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 25
+            $repoflag = 29
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -116,7 +122,7 @@ class packages::setup {
             }
             # to flush the package index, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 19
+            $repoflag = 23
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -183,6 +189,10 @@ class packages::setup {
                     components   => ["all"];
                 "bash":
                     url_path     => "repos/apt/custom/bash",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["all"];
+                "mozilla-mercurial":
+                    url_path     => "repos/apt/custom/mozilla-mercurial",
                     distribution => "${lsbdistcodename}",
                     components   => ["all"];
             }
