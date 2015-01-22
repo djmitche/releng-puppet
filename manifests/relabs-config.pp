@@ -5,7 +5,7 @@
 class config inherits config::base {
     $org = "relabs"
 
-    $puppet_notif_email = "releng-shared@mozilla.com"
+    $puppet_notif_email = "releng-puppet-mail@mozilla.com"
     $builder_username = "relabsbld"
     $grouped_puppet_servers = {
         ".*" => [
@@ -66,8 +66,8 @@ class config inherits config::base {
     $vmwaretools_version = "9.4.0-1280544"
     $vmwaretools_md5 = "4a2d230828919048c0c3ae8420f8edfe"
 
-    $ntp_server = "time.mozilla.org"
     $relayhost = "[smtp.mozilla.org]"
+    $ntp_servers = [ "ns1.private.releng.scl3.mozilla.com", "ns2.private.releng.scl3.mozilla.com" ]
     $enable_mig_agent = true
 
     $log_aggregator = 'hp1.relabs.releng.scl3.mozilla.com'

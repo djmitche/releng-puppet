@@ -20,6 +20,21 @@ node /t.*-\d+\.test\.releng\.scl3\.mozilla\.com/ {
 
 # AWS
 
+# temporary for bug 1103123
+node "tst-linux32-spot-204.test.releng.use1.mozilla.com" {
+    $pin_puppet_env = "mphillips"
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $slave_trustlevel = 'try'
+    include toplevel::slave::releng::test::headless
+}
+
+node "tst-linux64-spot-737.test.releng.usw2.mozilla.com" {
+    $pin_puppet_env = "mphillips"
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $slave_trustlevel = 'try'
+    include toplevel::slave::releng::test::headless
+}
+
 node /tst-.*\.test\.releng\.(use1|usw2)\.mozilla\.com/ {
     # tst-anything in any region of the test.releng mozilla zones
     $slave_trustlevel = 'try'
@@ -57,6 +72,12 @@ node /bld-lion-r5-\d+\.build\.releng\.scl3\.mozilla\.com/ {
 }
 
 ## try builders
+
+#Windows
+node /b-2008-\w+-\d+.winbuild.releng.scl3.mozilla.com/ {
+    $slave_trustlevel = 'try'
+    include toplevel::slave::releng::build
+}
 
 #linux64
 node /b-2008-\w+-\d+.winbuild.releng.scl3.mozilla.com/ {
@@ -98,6 +119,12 @@ node /(mac-(v2-|)|)signing\d+\.srv\.releng\.scl3\.mozilla\.com/ {
 node /releng-puppet\d+\.srv\.releng\.(scl3|use1|usw2)\.mozilla\.com/ {
     # all non-legacy puppet masters in all releng datacenters
     include toplevel::server::puppetmaster
+}
+
+## deploystudio servers
+
+node /install\.(build|test)\.releng\.scl3\.mozilla\.com/ {
+    include toplevel::server::deploystudio
 }
 
 ## casper imaging servers
@@ -784,6 +811,10 @@ node "buildbot-master119.bb.releng.scl3.mozilla.com" {
             basedir => "tests1-windows";
     }
     include toplevel::server::buildmaster::mozilla
+}
+
+node /log-aggregator\d+\.srv\.releng\.scl3\.mozilla\.com/ {
+    include toplevel::server
 }
 
 ## Loaners

@@ -35,6 +35,8 @@ class buildslave::startup::runner {
             }
         }
     }
+    include runner::tasks::cleanslate_task
+    include runner::tasks::post_flight
     include runner::tasks::buildbot
     include runner::tasks::halt
 }

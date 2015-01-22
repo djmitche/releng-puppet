@@ -60,10 +60,6 @@ class config::base {
     # the hostname of a centralized syslog server puppetmasters should forward to
     $puppetmaster_syslog_server = ""
 
-    # the hostname (or some more complicated formula generating the hostname)
-    # of the host to which all log data should be directed
-    $log_aggregator = ""
-
     ##
     ## packages and data
     ##
@@ -93,8 +89,8 @@ class config::base {
     ## basic host configuration
     ##
 
-    # NTP server to use for time sync
-    $ntp_server = "pool.ntp.org"
+    # NTP servers to use for time sync
+    $ntp_servers = [ "pool.ntp.org" ]
 
     # The host through which to relay mail; this goes to postfix's relayhost
     # parameter, so put [..] around it to avoid doing an MX lookup
@@ -137,7 +133,7 @@ class config::base {
     # content to be placed in authorized_keys (so, "<type> <key> <comment>")
     $extra_user_ssh_keys = {}
 
-    # a flag the controls which nodes should install and run MIG Agent
+    # a flag that controls which nodes should install and run MIG Agent
     $enable_mig_agent = false
 
     ##
@@ -169,8 +165,8 @@ class config::base {
     $install_google_api_key = false
     # true if ceph access keys should be installed on build slaves
     $install_ceph_cfg = false
-    # true if secret("mozilla_api_key") should be installed at /builds/mozilla-api.key
-    $install_mozilla_api_key = false
+    # true if mozilla geo location API keys should be installed on build slaves
+    $install_mozilla_geoloc_api_keys = false
     # true if secret("google_oauth_api_key") should be installed at /builds/google-oauth-api.key
     $install_google_oauth_api_key = false
 
@@ -294,8 +290,7 @@ class config::base {
     # s3 prefix name for aws_manager log parsing
     $cloudtrail_s3_base_prefix = ""
     # mercurial repository and branch for cloud-tools
-    $cloud_tools_hg_repo = "http://hg.mozilla.org/build/cloud-tools"
-    $cloud_tools_hg_branch = "default"
+    $cloud_tools_git_repo = "https://github.com/mozilla/build-cloud-tools"
     $aws_manager_mail_to = "nobody@mozilla.com"
     # slaverebooter
     $slaverebooter_mail_to = "nobody@mozilla.com"
@@ -307,6 +302,12 @@ class config::base {
 
     # slaveapi instance that slaverebooter should talk to.
     $slaverebooter_slaveapi = ""
+
+    # deploystudio 
+    # username and uid of the user deploystudio uses to access its file share
+    $deploystudio_username = 'dsadmin'
+    # deploystudio_uid must be an int greater than 500
+    $deploystudio_uid = 0
 
     # The version of xcode to install with packages::xcode. See that package
     # for the availible options.  If different hosts need different versions,
