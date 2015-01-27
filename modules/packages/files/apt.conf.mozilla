@@ -1,1 +1,11 @@
 APT::Get::AllowUnauthenticated "true";
+
+Acquire::https {
+    Verify-Peer "true";
+    Verify-Host "true";
+
+    # the puppetmasters serve "regular" https with the puppetmaster
+    # certificate, which we already have a CA for
+    CaInfo "/var/lib/puppet/ssl/certs/ca.pem";
+    SslForceVersion "TLSv2";  # don't downgrade to SSLv3
+};
