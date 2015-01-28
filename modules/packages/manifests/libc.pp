@@ -5,7 +5,21 @@
 class packages::libc {
     case $::operatingsystem {
         CentOS: {
-            # do nothing for now
+            realize(Packages::Yumrepo['glibc'])
+            case $::operatingsystemrelease {
+                6.5: {
+                    package {
+                        'glibc':
+                            ensure => "2.12-1.149.el6_6.5";
+                    }
+                }
+                6.2: {
+                    # still vulnerable - Bug 1126428
+                }
+                default: {
+                    fail("unsupported CentOS version $::operatingsystemrelease")
+                }
+            }
         }
 
         Darwin: {
