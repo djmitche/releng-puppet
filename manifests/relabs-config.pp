@@ -80,7 +80,6 @@ class config inherits config::base {
         "hskupin",
         "pchiasson",
         "jvehent",
-        "gmiroshnykov",
     ], hiera('ldap_admin_users', ['arr', 'dmitchell', 'jwatkins'])))
 }
 
