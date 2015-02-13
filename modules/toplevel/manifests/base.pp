@@ -45,6 +45,13 @@ class toplevel::base {
         # want to carefully control its version, so include it everywhere.
         include packages::openssl
         include packages::bash
+
+        # ensure the version of libc where required
+        include packages::libc
+    }
+
+    if $kernel == Linux {
+        include packages::kernel
     }
 
     # run RDP on all windows systems

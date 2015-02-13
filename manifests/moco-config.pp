@@ -62,6 +62,10 @@ class config inherits config::base {
     }
     $puppetmaster_syslog_server = "syslog1.private.scl3.mozilla.com"
 
+    # include this name in the master certs so that apt can validate the SSH
+    # connection
+    $puppetmaster_cert_extra_names = [$apt_repo_server]
+
     $user_python_repositories = [ "http://pypi.pvt.build.mozilla.org/pub", "http://pypi.pub.build.mozilla.org/pub" ]
 
     $nrpe_allowed_hosts = "127.0.0.1,10.26.75.30"
@@ -76,39 +80,25 @@ class config inherits config::base {
     $signing_allowed_ips = [
         '10.26.36.0/22',
         '10.26.40.0/22',
-        '10.26.48.0/24',
+        '10.26.48.25/32', # dev-master1
         '10.26.44.0/22',
         '10.26.52.0/22',
         '10.26.64.0/22',
-        '10.132.48.0/22',
         '10.132.52.0/22',
         '10.132.64.0/22',
-        '10.134.48.0/22',
         '10.134.52.0/22',
         '10.134.64.0/22',
-        '10.250.48.0/22',
+        # entire BB VLANs
+        "10.26.68.0/24",
+        "10.132.68.0/24",
+        "10.134.68.0/24",
     ]
     $signing_new_token_allowed_ips = [
-        '10.26.48.41',
-        '10.26.48.52',
-        '10.26.48.53',
-        '10.26.48.54',
-        '10.26.48.55',
-        '10.26.48.56',
-        '10.26.48.57',
-        '10.132.48.136',
-        '10.132.49.94',
-        '10.132.49.117',
-        '10.132.49.158',
-        '10.132.49.181',
-        '10.132.50.54',
-        '10.134.48.7',
-        '10.134.48.40',
-        '10.134.48.86',
-        '10.134.49.77',
-        '10.134.49.94',
-        '10.134.49.111',
-        '10.26.48.25',
+        '10.26.48.25/32', # dev-master1
+        # entire BB VLANs
+        "10.26.68.0/24",
+        "10.132.68.0/24",
+        "10.134.68.0/24",
     ]
 
     $extra_user_ssh_keys = {
@@ -183,6 +173,7 @@ class config inherits config::base {
     $selfserve_agent_carrot_exchange = "buildapi.control"
     $selfserve_agent_carrot_queue = "buildapi-agent-rabbit2"
 
+    $distinguished_aws_manager = "aws-manager1.srv.releng.scl3.mozilla.com"
     $aws_manager_mail_to = "release+aws-manager@mozilla.com"
     $cloudtrail_s3_bucket = "mozilla-releng-aws-logs"
     $cloudtrail_s3_base_prefix = "AWSLogs/314336048151/CloudTrail"
@@ -233,5 +224,37 @@ class config inherits config::base {
         10.9 => "5.0-cmdline",
         10.10 => "6.1-cmdline",
         default => undef
+    }
+
+    # When specifying the Ununtu current kernel, you must use the fully qualified version of the package
+    # The format is aa.bb.xx.yy.zz You can find this with 'dpkg -I linux-generic.deb'
+    $current_kernel = $operatingsystem ? {
+        'CentOS' => $operatingsystemrelease ? {
+            '6.2'   => '2.6.32-504.3.3.el6',
+            '6.5'   => '2.6.32-504.3.3.el6',
+            default => undef,
+        },
+        'Ubuntu' => $operatingsystemrelease ? {
+            '12.04' => '3.2.0.76.90',
+            '14.04' => '3.13.0.45.52',
+            default => undef,
+        },
+        default => undef,
+    }
+
+    # Specifying Ubuntu obsolete kernels is a different format than current kernel above
+    # The format is aa.bb.xx-yy
+    $obsolete_kernels = $operatingsystem ? {
+        'CentOS' => $operatingsystemrelease ? {
+            '6.2'   => [ '2.6.32-431.el6', '2.6.32-431.11.2.el6', '2.6.32-431.5.1.el6' ],
+            '6.5'   => [ '2.6.32-431.el6', '2.6.32-431.11.2.el6', '2.6.32-431.5.1.el6' ],
+            default => [],
+        },
+        'Ubuntu' => $operatingsystemrelease ? {
+            '12.04' => [ '3.2.0-75', '3.2.0-38' ], 
+            '14.04' => [ '3.13.0-27', '3.13.0-44' ],
+            default => [],
+        },
+        default => [],
     }
 }
