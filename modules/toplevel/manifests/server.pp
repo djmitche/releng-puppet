@@ -35,14 +35,4 @@ class toplevel::server inherits toplevel::base {
             }
         }
     }
-
-    # auditd only runs on CentOS at the moment
-    case $::operatingsystem {
-        'CentOS': {
-            class {
-                'auditd':
-                    host_type => 'server';
-            }
-        }
-    }
 }
