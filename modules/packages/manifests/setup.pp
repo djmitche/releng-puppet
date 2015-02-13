@@ -83,11 +83,17 @@ class packages::setup {
 
                 "debian": # misc debian utilities
                     url_path => "repos/yum/custom/debian/$architecture";
+
+                "kernel":
+                    url_path => "repos/yum/custom/kernel/$architecture";
+
+                "glibc":
+                    url_path => "repos/yum/custom/glibc/$architecture";
             }
 
             # to flush the metadata cache, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 29
+            $repoflag = 33
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -122,7 +128,7 @@ class packages::setup {
             }
             # to flush the package index, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 23
+            $repoflag = 27
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -191,8 +197,16 @@ class packages::setup {
                     url_path     => "repos/apt/custom/bash",
                     distribution => "${lsbdistcodename}",
                     components   => ["all"];
+                "eglibc":
+                    url_path     => "repos/apt/custom/eglibc",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["all"];
                 "mozilla-mercurial":
                     url_path     => "repos/apt/custom/mozilla-mercurial",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["all"];
+                "kernel":
+                    url_path     => "repos/apt/custom/kernel",
                     distribution => "${lsbdistcodename}",
                     components   => ["all"];
             }

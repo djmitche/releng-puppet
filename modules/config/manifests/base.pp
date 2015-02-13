@@ -60,6 +60,11 @@ class config::base {
     # the hostname of a centralized syslog server puppetmasters should forward to
     $puppetmaster_syslog_server = ""
 
+    # extra hostnames to be included in the puppetmaster certificates as
+    # alternate hostnames.  If $apt_repo_server is not the hostname of your master,
+    # include it in this list.
+    $puppetmaster_cert_extra_names = []
+
     ##
     ## packages and data
     ##
@@ -281,6 +286,8 @@ class config::base {
 
     # AWS management
 
+    # fqdn of the distinguished_aws_manager
+    $distinguished_aws_manager = ""
     # the username under which all operations take place
     $buildduty_username = 'buildduty'
     # root directory for aws_manager; this must be under /builds
@@ -314,4 +321,11 @@ class config::base {
     # it's fine to use a ternary operator here; see moco-config.pp for an
     # example.
     $xcode_version = undef
+
+    # current_kernel is a string of the kernel release version to be installed. if it
+    # is undef, the module is skipped over otherwise the it will install the kernel
+    # package version specified. obsolete_kernel is an array of kernel version
+    # strings and is optional. If current_kernel is undef, obsolete_kernel has no effect
+    $current_kernel = undef 
+    $obsolete_kernels = [] 
 }
