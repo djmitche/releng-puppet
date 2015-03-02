@@ -270,4 +270,11 @@ class config inherits config::base {
         },
         default => [],
     }
+
+    # bacula configuration
+
+    $bacula_director = 'bacula1.private.scl3.mozilla.com'
+    $bacula_fd_port = 9102
+    # this isn't actually secret, but it's long, so we stick it in hiera.
+    $bacula_cacert = secret('bacula_ca_cert')
 }
