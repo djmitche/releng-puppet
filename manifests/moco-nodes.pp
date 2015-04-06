@@ -16,6 +16,8 @@ node /t.*-\d+\.test\.releng\.scl3\.mozilla\.com/ {
     # hosts starting with t and ending in -digit.test.releng.scl3.mozilla.com
     $node_security_level = 'low'
     $slave_trustlevel = 'try'
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $pin_puppet_env = "dmitchell"
     include toplevel::slave::releng::test::gpu
 }
 
@@ -113,6 +115,8 @@ node /(dev|try)-.*\.(dev|try)\.releng\.(use1|usw2)\.mozilla.com/ {
 # OS X
 node /bld-lion-r5-\d+.try.releng.scl3.mozilla.com/ {
     # any bld-lion-r5-(digit) hosts in the scl3 try zone
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $pin_puppet_env = "dmitchell"
     $node_security_level = 'low'
     $slave_trustlevel = 'try'
     include toplevel::slave::releng::build::standard
@@ -122,6 +126,8 @@ node /bld-lion-r5-\d+.try.releng.scl3.mozilla.com/ {
 
 node /(mac-(v2-|)|)signing\d+\.srv\.releng\.scl3\.mozilla\.com/ {
     # all mac and linux signing servers
+    $pin_puppet_server = "releng-puppet2.srv.releng.scl3.mozilla.com"
+    $pin_puppet_env = "dmitchell"
     $node_security_level = 'maximum'
     include toplevel::server::signing
 }
