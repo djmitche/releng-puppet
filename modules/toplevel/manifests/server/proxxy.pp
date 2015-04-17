@@ -3,5 +3,11 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 class toplevel::server::proxxy inherits toplevel::server {
+    include ::security
+    assert {
+      'proxxy-high-security':
+        condition => $::security::high;
+    }
+
     include ::proxxy
 }

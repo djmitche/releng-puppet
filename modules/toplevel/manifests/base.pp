@@ -26,7 +26,7 @@ class toplevel::base {
     include ssh
     include timezone
     include tweaks::rc_local
-    include needs_reboot::motd
+    include needs_reboot
 
     class { 'web_proxy':
         host => $::config::web_proxy_host,
@@ -40,6 +40,7 @@ class toplevel::base {
         include users::global
         include powermanagement
         include collectd
+        include log_aggregator::client
 
         # openssl ends up getting pulled in as a dependency everywhere, and we
         # want to carefully control its version, so include it everywhere.
@@ -58,4 +59,6 @@ class toplevel::base {
     if ($::operatingsystem == windows) {
         include rdp
     }
+
+    include security::motd
 }

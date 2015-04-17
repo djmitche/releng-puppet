@@ -57,8 +57,12 @@ class config::base {
     # the URL at which puppet facts are sent to Foreman
     $puppet_server_facturl = ""
 
-    # the hostname of a centralized syslog server puppetmasters should forward to
-    $puppetmaster_syslog_server = ""
+    # the hostname (or some more complicated formula generating the hostname)
+    # of the host to which all syslog data should be directed
+    $log_aggregator = ""
+
+    # the hostname of a cef server for auditd output
+    $cef_syslog_server = ""
 
     # extra hostnames to be included in the puppetmaster certificates as
     # alternate hostnames.  If $apt_repo_server is not the hostname of your master,
@@ -93,6 +97,12 @@ class config::base {
     ##
     ## basic host configuration
     ##
+
+    # the default security level for hosts which do not specify a security
+    # level in their node definition.  The options here are 'low', 'medium',
+    # 'high', and 'maximum', and the ramifications of those levels are
+    # widespread.  See the 'security' module and look for '$security::level'.
+    $default_security_level = 'medium'
 
     # NTP servers to use for time sync
     $ntp_servers = [ "pool.ntp.org" ]
@@ -174,6 +184,8 @@ class config::base {
     $install_mozilla_geoloc_api_keys = false
     # true if secret("google_oauth_api_key") should be installed at /builds/google-oauth-api.key
     $install_google_oauth_api_key = false
+    # true if secret("crash_stats_api_token") should be installed on build slaves
+    $install_crash_stats_api_token = false
 
     # signingserver
 
@@ -237,6 +249,21 @@ class config::base {
     $releaserunner_tools_branch = "default"
     # root directory for releaserunner; this must be under /builds
     $releaserunner_root = "/builds/releaserunner"
+
+    # runner task settings
+
+    $runner_hg_tools_path = "/tools/checkouts/build-tools"
+    $runner_hg_tools_repo = "https://hg.mozilla.org/build/tools"
+    $runner_hg_tools_branch = "default"
+    $runner_hg_mozharness_path = "/tools/checkouts/mozharness"
+    $runner_hg_mozharness_repo = "https://hg.mozilla.org/build/mozharness"
+    $runner_hg_mozharness_branch = "production"
+
+    $runner_env_hg_share_base_dir = "/builds/hg-shared"
+    $runner_env_git_share_base_dir = "/builds/git-shared"
+
+    $runner_buildbot_slave_dir = ""
+    $runner_clobberer_url = ""
 
     # shipit_notifier
 
@@ -310,11 +337,13 @@ class config::base {
     # slaveapi instance that slaverebooter should talk to.
     $slaverebooter_slaveapi = ""
 
-    # deploystudio 
+    # deploystudio
     # username and uid of the user deploystudio uses to access its file share
     $deploystudio_username = 'dsadmin'
     # deploystudio_uid must be an int greater than 500
     $deploystudio_uid = 0
+    # deploystudio root data directory
+    $deploystudio_dir = "/Deploy"
 
     # The version of xcode to install with packages::xcode. See that package
     # for the availible options.  If different hosts need different versions,
@@ -326,6 +355,12 @@ class config::base {
     # is undef, the module is skipped over otherwise the it will install the kernel
     # package version specified. obsolete_kernel is an array of kernel version
     # strings and is optional. If current_kernel is undef, obsolete_kernel has no effect
-    $current_kernel = undef 
-    $obsolete_kernels = [] 
+    $current_kernel = undef
+    $obsolete_kernels = []
+
+    # Bacula configuration.  Mozilla uses Bacula Enterprise, which is not
+    # redistributable.
+    $bacula_director = '' # hostname of the director
+    $bacula_fd_port = '' # port on the director
+    $bacula_cacert = '' # full text of the CA cert signing the director's keys
 }

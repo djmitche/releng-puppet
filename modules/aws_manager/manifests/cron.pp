@@ -15,7 +15,7 @@ class aws_manager::cron {
         }
     } else {
         motd { "aws-manager":
-            content => "** This is a standby aws-manager; crontasks are disabled here.\n*** The distinguished aws-managers is ${aws_manager::settings::distinguished_aws_manager}";
+            content => "** This is a standby aws-manager; crontasks are disabled here.\n*** The distinguished aws-managers is ${aws_manager::settings::distinguished_aws_manager}\n";
         }
     }
 
@@ -141,9 +141,7 @@ class aws_manager::cron {
     }
 
     file {
-        "/etc/cron.d/aws-manager-update-hg-clone":
-            ensure => absent;
         "/etc/cron.d/aws-manager-update-git-clone":
-            content => "*/5 * * * * ${users::buildduty::username} cd ${aws_manager::settings::cloud_tools_dst} && git pull -q\n";
+            content => "*/5 * * * * ${users::buildduty::username} cd ${aws_manager::settings::cloud_tools_dst} && /usr/local/bin/git pull -q\n";
     }
 }

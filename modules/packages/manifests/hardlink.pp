@@ -2,13 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-class packages::mozilla::android_sdk18 {
+class packages::hardlink {
     case $::operatingsystem {
-        Ubuntu: {
+        CentOS: {
             package {
-                # Built from https://github.com/rail/android-sdk
-                'android-sdk18':
-                    ensure => '0.r18moz1-0moz1';
+                "hardlink":
+                    ensure => latest;
             }
         }
 
@@ -17,3 +16,4 @@ class packages::mozilla::android_sdk18 {
         }
     }
 }
+

@@ -14,7 +14,7 @@ class runner {
             python   => $packages::mozilla::python27::python,
             require  => Class['packages::mozilla::python27'],
             packages => [
-                'runner==1.6',
+                'runner==2.0',
             ];
     }
 
@@ -32,6 +32,10 @@ class runner {
             before  => Service['runner'],
             mode    => '0755',
             source  => 'puppet:///modules/runner/influxdb_hook.py';
+        "$runner::settings::influxcreds":
+            before  => Service['runner'],
+            content  => template('runner/influxcreds.erb'),
+            show_diff => false;
     }
 
     case $::operatingsystem {
