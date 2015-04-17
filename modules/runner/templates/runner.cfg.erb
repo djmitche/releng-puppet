@@ -12,9 +12,8 @@ max_time = 0
 [env]
 HG_SHARE_BASE_DIR=<%= scope.lookupvar('::config::runner_env_hg_share_base_dir') %>
 GIT_SHARE_BASE_DIR=<%= scope.lookupvar('::config::runner_env_git_share_base_dir') %>
-INFLUXDB_URL=<%=scope.function_secret(["influxdb_credentials"])%>
-INFLUXDB_NAME=runner_tasks
 PATH=<%= scope.lookupvar('::runner::settings::runner_path') %>
+TWISTD_LOG_PATH=<%= scope.lookupvar('::config::runner_buildbot_slave_dir') %>/twistd.log
 
 [hg]
 tools_path = <%= scope.lookupvar('::config::runner_hg_tools_path') %>
@@ -24,6 +23,9 @@ tools_branch = <%= scope.lookupvar('::config::runner_hg_tools_branch') %>
 mozharness_path = <%= scope.lookupvar('::config::runner_hg_mozharness_path') %>
 mozharness_repo = <%= scope.lookupvar('::config::runner_hg_mozharness_repo') %>
 mozharness_branch = <%= scope.lookupvar('::config::runner_hg_mozharness_branch') %>
+
+[clobberer]
+url = <%= scope.lookupvar('::config::runner_clobberer_url') %>
 
 [populate_shared_repos]
 max_time = 1800

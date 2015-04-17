@@ -14,7 +14,7 @@ class toplevel::slave::releng inherits toplevel::slave {
     include packages::mozilla::tooltool
     include packages::wget
     include packages::mozilla::py27_mercurial
-    
+
     if ($::operatingsystem == Windows) {
         include tweaks::disablejit
         include tweaks::memory_paging
@@ -22,24 +22,27 @@ class toplevel::slave::releng inherits toplevel::slave {
         include tweaks::ntfs_options
         include tweaks::process_priority
         include tweaks::pwrshell_options
-        include tweaks::server_initialize 
+        include tweaks::server_initialize
         include tweaks::shutdown_tracker
         include packages::binscope
         include packages::psutil
+        include packages::pywin32
         include packages::mapi_headers
         include fw::windows_exceptions
         include fw::windows_settings
     }
-    if ($::ec2_instance_id != "") {
-        # authorize aws-manager to reboot intsances
-        users::builder::extra_authorized_key {
-            'aws-ssh-key': ;
+    case $::kernel {
+        'Linux': {
+            # authorize aws-manager to reboot instances
+            users::builder::extra_authorized_key {
+                'aws-ssh-key': ;
+            }
         }
     }
     if ($::config::enable_mig_agent) {
         case $::operatingsystem {
             # Darwin support is coming soon
-            'CentOS', 'RedHat', 'Ubuntu': {
+            'CentOS', 'RedHat', 'Ubuntu', 'Darwin': {
                 include mig::agent::checkin
             }
         }

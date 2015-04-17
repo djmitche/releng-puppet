@@ -41,7 +41,6 @@ class talos {
                     include packages::cpu-checker
                     include packages::qemu-kvm
                     include packages::bridge-utils
-                    include androidemulator
                 }
             }
         }
@@ -63,13 +62,17 @@ class talos {
     case $::operatingsystem {
         Darwin, CentOS, Ubuntu: {
             file {
-                ["/builds/slave/talos-slave",
-                 "/builds/slave/talos-slave/talos-data",
+                ["/builds/slave/talos-data",
                  $talos::settings::apachedocumentroot]:
                     ensure => directory,
                     owner => "$users::builder::username",
                     group => "$users::builder::group",
                     mode => 0755;
+            }
+            file {
+                "/builds/talos-slave":
+                    ensure => absent,
+                    force => true;
             }
             httpd::config {
                 "talos.conf":

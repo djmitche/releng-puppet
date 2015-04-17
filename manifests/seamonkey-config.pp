@@ -18,6 +18,7 @@ class config inherits config::base {
     $data_servers = $puppet_servers
     $data_server = $puppet_server
     $ntp_servers = [ "us.pool.ntp.org" ]
+    $relayhost = "[smtp.mozilla.org]"
 
     $distinguished_puppetmaster = "sea-puppet.community.scl3.mozilla.com"
     $puppetmaster_upstream_rsync_source = 'rsync://puppetagain.pub.build.mozilla.org/data/'
@@ -36,6 +37,10 @@ class config inherits config::base {
                     'netops', 'team_dcops', 'team_opsec', 'team_moc', 'team_infra', 'team_storage'],
             },
         }
+    }
+
+    $extra_user_ssh_keys = {
+        'aws-ssh-key' => [''],
     }
 
     $admin_users = unique(concat([
@@ -67,4 +72,5 @@ class config inherits config::base {
     $runner_env_hg_share_base_dir = '/builds/hg-shared'
     $runner_env_git_share_base_dir = '/builds/git-shared'
     $runner_buildbot_slave_dir = '/builds/slave'
+    $runner_clobberer_url = 'http://callek.net/always_clobber.php'
 }

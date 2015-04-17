@@ -11,11 +11,6 @@ class signingserver::base {
         include fw
     }
 
-    # nagios checks for signing
-    include nrpe::check::child_procs_regex
-    include nrpe::check::ntp_time
-    include nrpe::check::swap
-
     # lots of packages for signing, with some differing between operating
     # systems
     include packages::mozilla::python27
@@ -38,7 +33,6 @@ class signingserver::base {
             include packages::libevent
             include packages::jdk16
             include packages::gcc
-            include packages::mozilla::android_sdk16
             # Make is used for manual XPI hotfix signing.
             include packages::make
             include packages::mozilla::osslsigncode

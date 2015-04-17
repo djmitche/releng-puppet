@@ -89,11 +89,21 @@ class packages::setup {
 
                 "glibc":
                     url_path => "repos/yum/custom/glibc/$architecture";
+
+                "rsyslog":
+                    url_path => "repos/yum/custom/rsyslog/$architecture";
+
+                "supervisor":
+                    url_path => "repos/yum/custom/supervisor/$architecture";
+
+                # a licensed copy of bacula enterprise, so not publicly available
+                "bacula-enterprise":
+                    url_path => "repos/private/yum/mirrors/bacula-enterprise/$majorver-$architecture";
             }
 
             # to flush the metadata cache, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 33
+            $repoflag = 34
             file {
                 "/etc/.repo-flag":
                     content =>
@@ -128,7 +138,7 @@ class packages::setup {
             }
             # to flush the package index, increase this value by one (or
             # anything, really, just change it).
-            $repoflag = 27
+            $repoflag = 28
             file {
                 "/etc/.repo-flag":
                     content =>

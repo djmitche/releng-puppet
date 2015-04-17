@@ -3,5 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 class toplevel::server::deploystudio inherits toplevel::server {
+    include ::deploystudio
     include users::deploystudio
 }

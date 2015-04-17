@@ -6,11 +6,12 @@ class mig::agent::base(
     $installservice,
     $discoverpublicip,
     $checkin,
-    $moduletimeout
+    $moduletimeout,
+    $apiurl
 ) {
     include packages::mozilla::mig_agent
     case $::operatingsystem {
-        'CentOS', 'RedHat', 'Ubuntu': {
+        'CentOS', 'RedHat', 'Ubuntu', 'Darwin': {
             # Package installation is performed in packages::mozilla::mig_agent
             # Service startup is done in mig::agent::daemon. The service is not started in checkin mode,
             # because runner::tasks::mig_agent will invoke it between build jobs.
@@ -29,25 +30,32 @@ class mig::agent::base(
                     before => [ Class['packages::mozilla::mig_agent'] ];
                 '/etc/mig/mig-agent.cfg':
                     content => template('mig/mig-agent.cfg.erb'),
+                    show_diff => false,
                     owner => 'root',
                     mode => 600,
                     before => [ Class['packages::mozilla::mig_agent'] ];
                 '/etc/mig/ca.crt':
                     content => template('mig/ca.crt.erb'),
+                    show_diff => false,
                     owner => 'root',
                     mode => 600,
                     before => [ Class['packages::mozilla::mig_agent'] ];
                 '/etc/mig/agent.crt':
                     content => template('mig/agent.crt.erb'),
+                    show_diff => false,
                     owner => 'root',
                     mode => 600,
                     before => [ Class['packages::mozilla::mig_agent'] ];
                 '/etc/mig/agent.key':
                     content => template('mig/agent.key.erb'),
+                    show_diff => false,
                     owner => 'root',
                     mode => 600,
                     before => [ Class['packages::mozilla::mig_agent'] ];
             }
+        }
+        default: {
+            fail("mig is not supported on ${::operatingsystem}")
         }
     }
 }

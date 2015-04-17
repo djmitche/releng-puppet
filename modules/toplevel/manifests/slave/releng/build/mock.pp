@@ -28,6 +28,7 @@ class toplevel::slave::releng::build::mock inherits toplevel::slave::releng::bui
 
 
     include runner::tasks::checkout_tools
+    include runner::tasks::clobber
     include runner::tasks::update_shared_repos
     include runner::tasks::config_mockbuild
     include runner::tasks::cleanup
@@ -35,10 +36,10 @@ class toplevel::slave::releng::build::mock inherits toplevel::slave::releng::bui
         'runner::tasks::purge_builds':
             required_space => 20;
     }
-    if ($::ec2_instance_id != "") {
-        # Prepopulate shared repos on AWS instances only
-        # Requires boto (not installed on in-house machines)
-        include runner::tasks::populate_shared_repos
-        include runner::tasks::check_ami
+    case $::kernel {
+        'Linux': {
+            include runner::tasks::populate_shared_repos
+            include runner::tasks::check_ami
+        }
     }
 }
